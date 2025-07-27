@@ -1,0 +1,75 @@
+"use client";
+
+import React from "react";
+import { Position } from "@/types";
+
+interface WindowProps {
+  id: number;
+  title: string;
+  position: Position;
+  zIndex: number;
+  onClose: (id: number) => void;
+  onMinimize: (id: number) => void;
+  onMouseDown: (e: React.MouseEvent<Element>, id: number) => void;
+  onBringToFront: (id: number) => void;
+  children: React.ReactNode;
+}
+
+const Window: React.FC<WindowProps> = ({
+  id,
+  title,
+  position,
+  zIndex,
+  onClose,
+  onMinimize,
+  onMouseDown,
+  onBringToFront,
+  children,
+}) => {
+  return (
+    <div
+      className="absolute bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden"
+      style={{
+        left: position.x,
+        top: position.y,
+        width: 600,
+        height: 400,
+        zIndex: zIndex,
+      }}
+      onClick={() => onBringToFront(id)}
+    >
+      <div
+        className="h-8 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-3 cursor-move"
+        onMouseDown={(e) => onMouseDown(e, id)}
+      >
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onClose(id);
+              }}
+              className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors"
+            />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onMinimize(id);
+              }}
+              className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors"
+            />
+            {/* <button className="w-3 h-3 bg-green-500 rounded-full hover:bg-green-600 transition-colors" /> */}
+            <button className="w-3 h-3 bg-gray-300 rounded-full" />
+          </div>
+        </div>
+        <span className="text-sm font-medium text-gray-700 absolute left-1/2 transform -translate-x-1/2">
+          {title}
+        </span>
+      </div>
+
+      <div className="h-[calc(100%-2rem)] overflow-auto">{children}</div>
+    </div>
+  );
+};
+
+export default Window;
