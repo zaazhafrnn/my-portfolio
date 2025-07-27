@@ -1,14 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-import { Folder, User, Mail, Code, Image } from "lucide-react";
+import Image from "next/image";
+import { Folder, User, Mail, Code, Image as ImageIcon } from "lucide-react";
 import Window from "@/components/Window/Window";
 import { useWindowManager } from "@/hooks/useWindowManager";
 
 const apps = [
   { id: "about", name: "About Me", icon: User, color: "bg-blue-500" },
   { id: "projects", name: "Projects", icon: Code, color: "bg-green-500" },
-  { id: "portfolio", name: "Portfolio", icon: Image, color: "bg-purple-500" },
+  { id: "portfolio", name: "Portfolio", icon: ImageIcon, color: "bg-purple-500" },
   { id: "contact", name: "Contact", icon: Mail, color: "bg-red-500" },
   { id: "folder", name: "Documents", icon: Folder, color: "bg-yellow-500" },
 ] as const;
@@ -175,6 +176,12 @@ const MacOSDesktop = () => {
       <div className="absolute top-0 left-0 right-0 h-6 bg-black/20 backdrop-blur-sm border-b border-white/20">
         <div className="flex items-center justify-between h-full px-4 text-white text-sm">
           <div className="flex items-center gap-4">
+            <Image
+              src={"/icons/apple-logo.svg"}
+              alt="My Icon"
+              width={16}
+              height={16}
+            />
             <span className="font-semibold">Portfolio</span>
             <span>File</span>
             <span>Edit</span>
@@ -185,6 +192,7 @@ const MacOSDesktop = () => {
               {new Date().toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
+                hour12: false
               })}
             </span>
           </div>
