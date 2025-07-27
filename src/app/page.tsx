@@ -179,20 +179,26 @@ const MacOSDesktop = () => {
         <div className="bg-black/20 backdrop-blur-lg rounded-3xl px-1 py-1 shadow-lg border border-white/30">
           <div className="flex items-center gap-2">
             {apps.map((app) => {
+              const isOpen = windows.some((window) => window.appId === app.id);
+
               return (
-                <button
-                  key={app.id}
-                  onClick={() => openWindow(app.id, app.name)}
-                  className="hover:scale-110 transition-transform duration-200"
-                  title={app.name}
-                >
-                  <Image
-                    src={app.icon}
-                    alt={app.name}
-                    width={48}
-                    height={48}
-                  />
-                </button>
+                <div key={app.id} className="flex flex-col items-center">
+                  <button
+                    onClick={() => openWindow(app.id, app.name)}
+                    className="hover:scale-110 transition-transform duration-200"
+                    title={app.name}
+                  >
+                    <Image
+                      src={app.icon}
+                      alt={app.name}
+                      width={48}
+                      height={48}
+                    />
+                  </button>
+                  {isOpen && (
+                    <div className="w-1 h-1 rounded-full bg-black -mt-1 translate-y-0.5"></div>
+                  )}
+                </div>
               );
             })}
           </div>
