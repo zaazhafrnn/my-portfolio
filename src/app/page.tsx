@@ -189,19 +189,18 @@ const MacOSDesktop = () => {
             <span>Edit</span>
             <span>View</span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
             <span>
-              {new Date().toLocaleDateString([], {
-                weekday: "long",
+              {new Date().toLocaleDateString('en-US', {
+                weekday: "short",
                 month: "short",
                 day: "numeric",
-              })}
+              }).replace(',', '')}
             </span>
             <span>
               {new Date().toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
-                hour12: false,
               })}
             </span>
           </div>
