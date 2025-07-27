@@ -155,7 +155,7 @@ const MacOSDesktop = () => {
           ),
       )}
 
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-999">
         <div className="bg-white/20 backdrop-blur-lg rounded-2xl px-4 py-3 shadow-lg border border-white/30">
           <div className="flex items-center gap-2">
             {apps.map((app) => {
