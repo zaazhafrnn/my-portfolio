@@ -2,16 +2,36 @@
 
 import React from "react";
 import Image from "next/image";
-import { Folder, User, Mail, Code, Image as ImageIcon } from "lucide-react";
+import { Mail, Code } from "lucide-react";
 import Window from "@/components/Window/Window";
 import { useWindowManager } from "@/hooks/useWindowManager";
 
 const apps = [
-  { id: "about", name: "About Me", icon: User, color: "bg-blue-500" },
-  { id: "projects", name: "Projects", icon: Code, color: "bg-green-500" },
-  { id: "portfolio", name: "Portfolio", icon: ImageIcon, color: "bg-purple-500" },
-  { id: "contact", name: "Contact", icon: Mail, color: "bg-red-500" },
-  { id: "folder", name: "Documents", icon: Folder, color: "bg-yellow-500" },
+  {
+    id: "about",
+    name: "About Me",
+    icon: "/icons/photos.png",
+  },
+  {
+    id: "projects",
+    name: "Projects",
+    icon: "/icons/safari.png",
+  },
+  {
+    id: "portfolio",
+    name: "Portfolio",
+    icon: "/icons/notes.png",
+  },
+  {
+    id: "contact",
+    name: "Contact",
+    icon: "/icons/finder.png",
+  },
+  {
+    id: "folder",
+    name: "Documents",
+    icon: "/icons/weather.png",
+  },
 ] as const;
 
 const MacOSDesktop = () => {
@@ -156,18 +176,22 @@ const MacOSDesktop = () => {
       )}
 
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-999">
-        <div className="bg-white/20 backdrop-blur-lg rounded-2xl px-4 py-3 shadow-lg border border-white/30">
+        <div className="bg-black/20 backdrop-blur-lg rounded-3xl px-1 py-1 shadow-lg border border-white/30">
           <div className="flex items-center gap-2">
             {apps.map((app) => {
-              const Icon = app.icon;
               return (
                 <button
                   key={app.id}
                   onClick={() => openWindow(app.id, app.name)}
-                  className={`w-12 h-12 ${app.color} rounded-xl flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform duration-200 hover:shadow-xl`}
+                  className="hover:scale-110 transition-transform duration-200"
                   title={app.name}
                 >
-                  <Icon size={24} />
+                  <Image
+                    src={app.icon}
+                    alt={app.name}
+                    width={48}
+                    height={48}
+                  />
                 </button>
               );
             })}
@@ -191,11 +215,13 @@ const MacOSDesktop = () => {
           </div>
           <div className="flex items-center gap-2">
             <span>
-              {new Date().toLocaleDateString('en-US', {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-              }).replace(',', '')}
+              {new Date()
+                .toLocaleDateString("en-US", {
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
+                })
+                .replace(",", "")}
             </span>
             <span>
               {new Date().toLocaleTimeString([], {
