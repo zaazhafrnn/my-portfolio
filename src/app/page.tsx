@@ -3,13 +3,13 @@
 import React from "react";
 import Image from "next/image";
 import { Mail, Code } from "lucide-react";
-import Window from "@/components/Window/Window";
+import Window from "@/components/ui/Window";
 import { useWindowManager } from "@/hooks/useWindowManager";
 
 const apps = [
   {
-    id: "about",
-    name: "About Me",
+    id: "photos",
+    name: "Photos",
     icon: "/icons/photos.png",
   },
   {
