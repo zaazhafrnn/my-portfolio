@@ -155,7 +155,6 @@ const MacOSDesktop = () => {
           ),
       )}
 
-      {/* Keep your existing Dock code */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2">
         <div className="bg-white/20 backdrop-blur-lg rounded-2xl px-4 py-3 shadow-lg border border-white/30">
           <div className="flex items-center gap-2">
@@ -180,7 +179,7 @@ const MacOSDesktop = () => {
         <div className="flex items-center justify-between h-full px-4 text-black text-base">
           <div className="flex items-center gap-4">
             <Image
-              src={"/icons/apple-logo.svg"}
+              src={"/icons/apple-logo-black.svg"}
               alt="My Icon"
               width={18}
               height={18}
