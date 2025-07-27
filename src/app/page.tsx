@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { Folder, User, Mail, Code, Image as ImageIcon } from "lucide-react";
 import Window from "@/components/Window/Window";
@@ -116,22 +116,26 @@ const MacOSDesktop = () => {
 
   return (
     <div
-      className="h-screen w-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 relative overflow-hidden select-none"
+      className="h-screen w-screen bg-gray-50 relative overflow-hidden select-none"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
-      {/* Desktop Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0">
         <div
           className="w-full h-full"
           style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, white 1px, transparent 0)`,
-            backgroundSize: "50px 50px",
+            backgroundColor: "rgb(248, 249, 250)",
+            backgroundImage: `
+                  linear-gradient(rgb(226, 232, 240) 1px, transparent 2px),
+                  linear-gradient(90deg, rgb(226, 232, 240) 1px, transparent 2px),
+                  linear-gradient(rgb(226, 232, 240) 1px, transparent 2px),
+                  linear-gradient(90deg, rgb(226, 232, 240) 1px, transparent 2px)
+                `,
+            backgroundSize: "150px 150px, 150px 150px, 25px 25px, 25px 25px",
           }}
         ></div>
       </div>
 
-      {/* Windows - This part changes */}
       {windows.map(
         (window) =>
           !window.isMinimized && (
@@ -172,15 +176,14 @@ const MacOSDesktop = () => {
         </div>
       </div>
 
-      {/* Keep your existing Menu Bar code */}
-      <div className="absolute top-0 left-0 right-0 h-6 bg-black/20 backdrop-blur-sm border-b border-white/20">
-        <div className="flex items-center justify-between h-full px-4 text-white text-sm">
+      <div className="absolute top-0 left-0 right-0 h-8.5 bg-black/2 backdrop-blur-sm border-b border-black/20">
+        <div className="flex items-center justify-between h-full px-4 text-black text-base">
           <div className="flex items-center gap-4">
             <Image
               src={"/icons/apple-logo.svg"}
               alt="My Icon"
-              width={16}
-              height={16}
+              width={18}
+              height={18}
             />
             <span className="font-semibold">Portfolio</span>
             <span>File</span>
@@ -189,10 +192,17 @@ const MacOSDesktop = () => {
           </div>
           <div className="flex items-center gap-4">
             <span>
+              {new Date().toLocaleDateString([], {
+                weekday: "long",
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+            <span>
               {new Date().toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
-                hour12: false
+                hour12: false,
               })}
             </span>
           </div>
