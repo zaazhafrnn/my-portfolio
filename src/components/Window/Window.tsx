@@ -1,7 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { FC } from "react";
 import { Position } from "@/types";
+import { X, Minus } from "lucide-react";
 
 interface WindowProps {
   id: number;
@@ -15,7 +16,7 @@ interface WindowProps {
   children: React.ReactNode;
 }
 
-const Window: React.FC<WindowProps> = ({
+const Window: FC<WindowProps> = ({
   id,
   title,
   position,
@@ -44,20 +45,42 @@ const Window: React.FC<WindowProps> = ({
       >
         <div className="flex items-center gap-2">
           <div className="flex gap-1">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onClose(id);
-              }}
-              className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors"
-            />
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onMinimize(id);
-              }}
-              className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors"
-            />
+            <div className="group relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose(id);
+                }}
+                className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center group"
+              >
+                <X 
+                  className="text-red-900 opacity-0 group-hover:opacity-100 transition-opacity" 
+                  size={8} 
+                  strokeWidth={4} 
+                />
+              </button>
+              <div className="absolute left-1/2 -translate-x-1/3 -bottom-10 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                Close
+              </div>
+            </div>
+            <div className="group relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onMinimize(id);
+                }}
+                className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors flex items-center justify-center group"
+              >
+                <Minus 
+                  className="text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity" 
+                  size={8} 
+                  strokeWidth={4} 
+                />
+              </button>
+              <div className="absolute left-1/2 -translate-x-1/2 -bottom-10 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                Minimize
+              </div>
+            </div>
             {/* <button className="w-3 h-3 bg-green-500 rounded-full hover:bg-green-600 transition-colors" /> */}
             <button className="w-3 h-3 bg-gray-300 rounded-full" />
           </div>
