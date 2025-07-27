@@ -16,6 +16,30 @@ export const useWindowManager = () => {
     offset: { x: 0, y: 0 },
   });
 
+  const reindexWindows = (winList: WindowData[]) => {
+    return winList.map((w, i) => ({ ...w, zIndex: i + 1 }));
+  };
+
+  const bringToFront = useCallback(
+    (windowId: number) => {
+      const target = windows.find((w) => w.id === windowId);
+      if (!target) return;
+
+      const others = windows.filter((w) => w.id !== windowId);
+      const reordered = [...others, target];
+      setWindows(reindexWindows(reordered));
+    },
+    [windows],
+  );
+
+  const minimizeWindow = useCallback((windowId: number) => {
+    setWindows((prev) =>
+      prev.map((w) =>
+        w.id === windowId ? { ...w, isMinimized: !w.isMinimized } : w,
+      ),
+    );
+  }, []);
+
   const openWindow = useCallback(
     (appId: string, title: string) => {
       const isWindowOpen = windows.some((window) => window.appId === appId);
@@ -24,7 +48,6 @@ export const useWindowManager = () => {
         const existingWindow = windows.find((w) => w.appId === appId);
         if (existingWindow) {
           bringToFront(existingWindow.id);
-          // Unminimize if it was minimized
           if (existingWindow.isMinimized) {
             minimizeWindow(existingWindow.id);
           }
@@ -42,33 +65,20 @@ export const useWindowManager = () => {
         },
         size: { width: 600, height: 400 },
         isMinimized: false,
-        zIndex: nextWindowId,
+        zIndex: 0,
       };
 
-      setWindows((prev) => [...prev, newWindow]);
+      const updated = [...windows, newWindow];
+      setWindows(reindexWindows(updated));
       setNextWindowId((prev) => prev + 1);
     },
-    [windows, nextWindowId],
+    [windows, nextWindowId, bringToFront, minimizeWindow],
   );
 
-  const closeWindow = useCallback((windowId: number) => {
-    setWindows((prev) => prev.filter((w) => w.id !== windowId));
-  }, []);
-
-  const minimizeWindow = useCallback((windowId: number) => {
-    setWindows((prev) =>
-      prev.map((w) =>
-        w.id === windowId ? { ...w, isMinimized: !w.isMinimized } : w,
-      ),
-    );
-  }, []);
-
-  const bringToFront = useCallback(
+  const closeWindow = useCallback(
     (windowId: number) => {
-      const maxZ = Math.max(...windows.map((w) => w.zIndex), 0);
-      setWindows((prev) =>
-        prev.map((w) => (w.id === windowId ? { ...w, zIndex: maxZ + 1 } : w)),
-      );
+      const updated = windows.filter((w) => w.id !== windowId);
+      setWindows(reindexWindows(updated));
     },
     [windows],
   );
