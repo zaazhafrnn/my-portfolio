@@ -22,7 +22,12 @@ interface WindowProps {
   customToolbarLeft?: React.ReactNode;
   customToolbarRight?: React.ReactNode;
   showDefaultButtons?: boolean;
+  width?: number;
+  height?: number;
 }
+
+const DEFAULT_WIDTH = 600;
+const DEFAULT_HEIGHT = 400;
 
 const Window: FC<WindowProps> = ({
   id,
@@ -37,16 +42,21 @@ const Window: FC<WindowProps> = ({
   customToolbarLeft,
   customToolbarRight,
   showDefaultButtons = true,
+  width,
+  height,
 }) => {
+  const w = width ?? DEFAULT_WIDTH;
+  const h = height ?? DEFAULT_HEIGHT;
+
   return (
     <div
       className="absolute bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden"
       style={{
         left: position.x,
         top: position.y,
-        width: 600,
-        height: 400,
-        zIndex: zIndex,
+        width: w,
+        height: h,
+        zIndex,
       }}
       onClick={() => onBringToFront(id)}
     >
@@ -124,6 +134,7 @@ const Window: FC<WindowProps> = ({
 
         <div className="flex items-center gap-1">{customToolbarRight}</div>
       </div>
+
       <div className="h-[calc(100%-2rem)] overflow-auto">{children}</div>
     </div>
   );

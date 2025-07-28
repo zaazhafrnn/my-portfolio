@@ -34,11 +34,11 @@ export default function ResumeApp({
   const disabled = !!error || isLoading;
 
   const handleZoomIn = () => {
-    setZoom((prev) => Math.min(prev + 25, 300));
+    setZoom((prev) => Math.min(prev + 10, 200));
   };
 
   const handleZoomOut = () => {
-    setZoom((prev) => Math.max(prev - 25, 25));
+    setZoom((prev) => Math.max(prev - 10, 50));
   };
 
   const handleDownload = () => {
@@ -61,7 +61,7 @@ export default function ResumeApp({
           <TooltipTrigger asChild>
             <button
               onClick={handleZoomOut}
-              disabled={disabled || zoom <= 25}
+              disabled={disabled || zoom <= 50}
               className="p-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-default transition-colors cursor-pointer disabled:pointer-events-none"
             >
               <ZoomOut size={12} strokeWidth={1.7} />
@@ -101,7 +101,7 @@ export default function ResumeApp({
           <TooltipTrigger asChild>
             <button
               onClick={handleZoomIn}
-              disabled={disabled || zoom >= 300}
+              disabled={disabled || zoom >= 200}
               className="p-1 rounded disabled:opacity-50 disabled:cursor-not-allowed bg-gray-200 hover:bg-gray-300 transition-colors cursor-pointer disabled:pointer-events-none"
             >
               <ZoomIn size={12} strokeWidth={1.7} />

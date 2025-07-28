@@ -6,6 +6,7 @@ import Window from "@/components/ui/Window";
 import { useWindowManager } from "@/hooks/useWindowManager";
 import dynamic from "next/dynamic";
 import { PhotosApp, ResumeApp } from "@/components/apps";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
 
 const MacOSDock = dynamic(
   () =>
@@ -42,6 +43,10 @@ const apps = [
     icon: "/icons/weather.png",
   },
 ];
+
+const WINDOW_SIZES: Record<string, { width: number; height: number }> = {
+  resume: { width: 600, height: 530 },
+};
 
 export default function MacOSDesktop() {
   const {
@@ -158,11 +163,13 @@ export default function MacOSDesktop() {
               onBringToFront={bringToFront}
               customToolbarLeft={windowToolbarContent[window.id]?.left}
               customToolbarRight={windowToolbarContent[window.id]?.right}
+              width={WINDOW_SIZES[window.appId]?.width}
+              height={WINDOW_SIZES[window.appId]?.height}
             >
               <Suspense
                 fallback={
                   <div className="p-6 h-full flex items-center justify-center">
-                    <p className="text-gray-500">Loading...</p>
+                    <p className="text-gray-500"><Spinner /></p>
                   </div>
                 }
               >
