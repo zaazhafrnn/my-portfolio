@@ -2,14 +2,9 @@
 
 import React, { FC, Suspense, lazy } from "react";
 
-// Lazy load app components
 const AppComponents = {
-  // about: lazy(() => import("./AboutApp")),
-  // projects: lazy(() => import("./ProjectsApp")),
-  // contact: lazy(() => import("./ContactApp")),
   photos: lazy(() => import("./PhotosApp")),
-  // portfolio: lazy(() => import("./PortfolioApp")),
-  // folder: lazy(() => import("./DocumentsApp")),
+  resume: lazy(() => import("./ResumeApp")),
 };
 
 interface AppLoaderProps {

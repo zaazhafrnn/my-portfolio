@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import Image from "next/image";
 
-export default function PhotosApp() {
+export default function ResumeApp() {
   const [rotation, setRotation] = useState(-22.5);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);

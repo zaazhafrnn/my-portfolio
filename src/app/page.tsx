@@ -2,17 +2,12 @@
 
 import React, { Suspense } from "react";
 import Image from "next/image";
-import { Mail, Code } from "lucide-react";
 import Window from "@/components/ui/Window";
 import { useWindowManager } from "@/hooks/useWindowManager";
 import dynamic from "next/dynamic";
 import {
-  // AboutApp,
-  // ProjectsApp,
-  // ContactApp,
   PhotosApp,
-  // PortfolioApp,
-  // DocumentsApp,
+  ResumeApp,
 } from "@/components/apps";
 
 const MacOSDock = dynamic(
@@ -30,9 +25,9 @@ const apps = [
     icon: "/icons/photos.png",
   },
   {
-    id: "projects",
-    name: "Projects",
-    icon: "/icons/safari.png",
+    id: "resume",
+    name: "Resume",
+    icon: "/icons/file.png",
   },
   {
     id: "portfolio",
@@ -65,18 +60,10 @@ const MacOSDesktop = () => {
 
   const getWindowContent = (appId: string) => {
     switch (appId) {
-      // case "about":
-      //   return <AboutApp />;
-      // case "projects":
-      //   return <ProjectsApp />;
-      // case "contact":
-      //   return <ContactApp />;
       case "photos":
         return <PhotosApp />;
-      // case "portfolio":
-      //   return <PortfolioApp />;
-      // case "folder":
-      //   return <DocumentsApp />;
+      case "file":
+        return <ResumeApp />;
       default:
         return (
           <div className="p-6 h-full flex items-center justify-center">
