@@ -29,26 +29,26 @@ const apps = [
     name: "Photo Dumps",
     icon: "/icons/photos.png",
   },
-  // {
-  //   id: "projects",
-  //   name: "Projects",
-  //   icon: "/icons/safari.png",
-  // },
-  // {
-  //   id: "portfolio",
-  //   name: "Portfolio",
-  //   icon: "/icons/notes.png",
-  // },
-  // {
-  //   id: "contact",
-  //   name: "Contact",
-  //   icon: "/icons/finder.png",
-  // },
-  // {
-  //   id: "folder",
-  //   name: "Documents",
-  //   icon: "/icons/weather.png",
-  // },
+  {
+    id: "projects",
+    name: "Projects",
+    icon: "/icons/safari.png",
+  },
+  {
+    id: "portfolio",
+    name: "Portfolio",
+    icon: "/icons/notes.png",
+  },
+  {
+    id: "contact",
+    name: "Contact",
+    icon: "/icons/finder.png",
+  },
+  {
+    id: "folder",
+    name: "Documents",
+    icon: "/icons/weather.png",
+  },
 ];
 
 const MacOSDesktop = () => {
