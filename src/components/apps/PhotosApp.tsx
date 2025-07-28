@@ -6,26 +6,30 @@ import React, {
   useEffect,
   useCallback,
   MouseEvent as ReactMouseEvent,
+  useMemo,
 } from "react";
 import Image from "next/image";
 
 const PhotosApp: FC = () => {
-  const [rotation, setRotation] = useState(0);
+  const [rotation, setRotation] = useState(-22.5);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentRotation, setCurrentRotation] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const photos: string[] = [
-    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=400&fit=crop",
-    "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=400&fit=crop",
-  ];
+  const mediaItems = useMemo(
+    () => [
+      { type: "image", src: "/photos/image-1.png" },
+      { type: "video", src: "/photos/video-1.mp4" },
+      { type: "image", src: "/photos/image-2.png" },
+      { type: "image", src: "/photos/image-3.png" },
+      { type: "image", src: "/photos/image-4.png" },
+      { type: "video", src: "/photos/video-2.mp4" },
+      { type: "image", src: "/photos/image-5.png" },
+      { type: "image", src: "/photos/image-6.png" },
+    ],
+    [],
+  );
 
   const handleMouseDown = (e: ReactMouseEvent<HTMLDivElement>) => {
     setIsDragging(true);
@@ -47,9 +51,40 @@ const PhotosApp: FC = () => {
     setIsDragging(false);
   }, []);
 
-  const handleMouseLeave = (_e: ReactMouseEvent<HTMLDivElement>) => {
+  const handleMouseLeave = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    const videos = containerRef.current?.querySelectorAll("video");
+
+    const ensureVideoPlay = (video: HTMLVideoElement) => {
+      const playVideo = () => {
+        video.play().catch(() => {});
+      };
+
+      video.addEventListener("pause", playVideo);
+      video.addEventListener("loadeddata", playVideo);
+
+      playVideo();
+
+      return () => {
+        video.removeEventListener("pause", playVideo);
+        video.removeEventListener("loadeddata", playVideo);
+      };
+    };
+
+    const cleanupFunctions: (() => void)[] = [];
+
+    videos?.forEach((video) => {
+      const cleanup = ensureVideoPlay(video as HTMLVideoElement);
+      if (cleanup) cleanupFunctions.push(cleanup);
+    });
+
+    return () => {
+      cleanupFunctions.forEach((cleanup) => cleanup());
+    };
+  }, [mediaItems]);
 
   useEffect(() => {
     if (!isDragging) return;
@@ -81,13 +116,13 @@ const PhotosApp: FC = () => {
               transformOrigin: "50% 50%",
             }}
           >
-            {photos.map((photo, index) => {
-              const angle = (360 / photos.length) * index;
-              const translateZ = 110;
+            {mediaItems.map((item, index) => {
+              const angle = (360 / mediaItems.length) * index;
+              const translateZ = 125;
               return (
                 <div
                   key={index}
-                  className="absolute w-52 h-52 rounded-xl overflow-hidden"
+                  className="absolute w-64 h-85 rounded-xl overflow-hidden"
                   style={{
                     left: "50%",
                     top: "50%",
@@ -95,14 +130,25 @@ const PhotosApp: FC = () => {
                     transformStyle: "preserve-3d",
                   }}
                 >
-                  <Image
-                    src={photo}
-                    alt={`Photo ${index + 1}`}
-                    className="w-full h-full object-cover"
-                    draggable={false}
-                    width={208}
-                    height={208}
-                  />
+                  {item.type === "image" ? (
+                    <Image
+                      src={item.src}
+                      alt={`Media ${index + 1}`}
+                      className="w-full h-full object-cover"
+                      draggable={false}
+                      width={208}
+                      height={208}
+                    />
+                  ) : (
+                    <video
+                      src={item.src}
+                      className="w-full h-full object-cover"
+                      playsInline
+                      autoPlay
+                      loop
+                      muted
+                    />
+                  )}
                   <div
                     className="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl"
                     style={{
@@ -112,7 +158,7 @@ const PhotosApp: FC = () => {
                   >
                     <div className="flex items-center justify-center h-full">
                       <div className="text-white/40 text-sm font-mono">
-                        Photo {index + 1}
+                        {item.type === "image" ? "Photo" : "Video"} {index + 1}
                       </div>
                     </div>
                   </div>
