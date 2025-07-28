@@ -1,14 +1,11 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import Image from "next/image";
 import Window from "@/components/ui/Window";
 import { useWindowManager } from "@/hooks/useWindowManager";
 import dynamic from "next/dynamic";
-import {
-  PhotosApp,
-  ResumeApp,
-} from "@/components/apps";
+import { PhotosApp, ResumeApp } from "@/components/apps";
 
 const MacOSDock = dynamic(
   () =>
@@ -26,7 +23,7 @@ const apps = [
   },
   {
     id: "resume",
-    name: "Resume",
+    name: "Resume.pdf",
     icon: "/icons/file.png",
   },
   {
@@ -46,7 +43,7 @@ const apps = [
   },
 ];
 
-const MacOSDesktop = () => {
+export default function MacOSDesktop() {
   const {
     windows,
     openWindow,
@@ -58,12 +55,54 @@ const MacOSDesktop = () => {
     handleMouseUp,
   } = useWindowManager();
 
-  const getWindowContent = (appId: string) => {
+  const [windowToolbarContent, setWindowToolbarContent] = useState<{
+    [windowId: number]: {
+      left?: React.ReactNode;
+      right?: React.ReactNode;
+    };
+  }>({});
+
+  const handleToolbarLeftChange = (
+    windowId: number,
+    content: React.ReactNode,
+  ) => {
+    setWindowToolbarContent((prev) => ({
+      ...prev,
+      [windowId]: {
+        ...prev[windowId],
+        left: content,
+      },
+    }));
+  };
+
+  const handleToolbarRightChange = (
+    windowId: number,
+    content: React.ReactNode,
+  ) => {
+    setWindowToolbarContent((prev) => ({
+      ...prev,
+      [windowId]: {
+        ...prev[windowId],
+        right: content,
+      },
+    }));
+  };
+
+  const getWindowContent = (appId: string, windowId: number) => {
     switch (appId) {
       case "photos":
         return <PhotosApp />;
       case "resume":
-        return <ResumeApp />;
+        return (
+          <ResumeApp
+            onToolbarLeftChange={(content) =>
+              handleToolbarLeftChange(windowId, content)
+            }
+            onToolbarRightChange={(content) =>
+              handleToolbarRightChange(windowId, content)
+            }
+          />
+        );
       default:
         return (
           <div className="p-6 h-full flex items-center justify-center">
@@ -117,6 +156,8 @@ const MacOSDesktop = () => {
               onMinimize={minimizeWindow}
               onMouseDown={handleMouseDown}
               onBringToFront={bringToFront}
+              customToolbarLeft={windowToolbarContent[window.id]?.left}
+              customToolbarRight={windowToolbarContent[window.id]?.right}
             >
               <Suspense
                 fallback={
@@ -125,7 +166,7 @@ const MacOSDesktop = () => {
                   </div>
                 }
               >
-                {getWindowContent(window.appId)}
+                {getWindowContent(window.appId, window.id)}
               </Suspense>
             </Window>
           ),
@@ -176,6 +217,4 @@ const MacOSDesktop = () => {
       </div>
     </div>
   );
-};
-
-export default MacOSDesktop;
+}

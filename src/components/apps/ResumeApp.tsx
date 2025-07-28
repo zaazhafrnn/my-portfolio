@@ -1,172 +1,298 @@
 "use client";
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  MouseEvent as ReactMouseEvent,
-  useMemo,
-} from "react";
-import Image from "next/image";
 
-export default function ResumeApp() {
-  const [rotation, setRotation] = useState(-22.5);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [currentRotation, setCurrentRotation] = useState(0);
+import React, { useState, useEffect, useRef } from "react";
+import { ZoomIn, ZoomOut, Download, FileText } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Spinner } from "../ui/shadcn-io/spinner";
+
+interface ResumeAppProps {
+  className?: string;
+  onToolbarLeftChange?: (content: React.ReactNode) => void;
+  onToolbarRightChange?: (content: React.ReactNode) => void;
+}
+
+export default function ResumeApp({
+  className = "",
+  onToolbarLeftChange,
+  onToolbarRightChange,
+}: ResumeAppProps) {
+  const [zoom, setZoom] = useState(100);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [fileSize, setFileSize] = useState<string>("");
+  const [lastModified, setLastModified] = useState<string>("");
+  const [pdfUrl, setPdfUrl] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const mediaItems = useMemo(
-    () => [
-      { type: "image", src: "/photos/image-1.png" },
-      { type: "video", src: "/photos/video-1.mp4" },
-      { type: "image", src: "/photos/image-2.png" },
-      { type: "image", src: "/photos/image-3.png" },
-      { type: "image", src: "/photos/image-4.png" },
-      { type: "video", src: "/photos/video-2.mp4" },
-      { type: "image", src: "/photos/image-5.png" },
-      { type: "image", src: "/photos/image-6.png" },
-    ],
-    [],
-  );
+  const resumePath = "/folder/Resums.pdf";
 
-  const handleMouseDown = (e: ReactMouseEvent<HTMLDivElement>) => {
-    setIsDragging(true);
-    setStartX(e.clientX);
-    setCurrentRotation(rotation);
+  const handleZoomIn = () => {
+    setZoom((prev) => Math.min(prev + 25, 300));
   };
 
-  const handleMouseMove = useCallback(
-    (e: MouseEvent) => {
-      if (!isDragging) return;
-      const deltaX = e.clientX - startX;
-      const rotationDelta = deltaX * 0.5;
-      setRotation(currentRotation + rotationDelta);
-    },
-    [isDragging, startX, currentRotation],
+  const handleZoomOut = () => {
+    setZoom((prev) => Math.max(prev - 25, 25));
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = resumePath;
+    link.download = "resume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const resetZoom = () => {
+    setZoom(100);
+  };
+
+  const toolbarLeft = (
+    <div className="flex items-center gap-1">
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={handleZoomOut}
+              disabled={zoom <= 25}
+              className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              title="Zoom Out"
+            >
+              <ZoomOut size={12} />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent
+            side="bottom"
+            className="px-2 py-1 bg-gray-800 text-white text-xs rounded cursor-pointer"
+          >
+            Zoom Out
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={resetZoom}
+              className="px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200 rounded transition-colors min-w-[40px] cursor-pointer"
+              title="Reset Zoom"
+            >
+              {zoom}%
+            </button>
+          </TooltipTrigger>
+          <TooltipContent
+            side="bottom"
+            className="px-2 py-1 bg-gray-800 text-white text-xs rounded cursor-pointer"
+          >
+            Reset Zoom
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={handleZoomIn}
+              disabled={zoom >= 300}
+              className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              title="Zoom In"
+            >
+              <ZoomIn size={12} />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent
+            side="bottom"
+            className="px-2 py-1 bg-gray-800 text-white text-xs rounded cursor-pointer"
+          >
+            Zoom In
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
   );
 
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+  const toolbarRight = (
+    <div className="flex items-center gap-1">
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={handleDownload}
+              className="p-1 rounded hover:bg-gray-200 transition-colors cursor-pointer"
+              title="Download PDF"
+            >
+              <Download size={12} />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent
+            side="bottom"
+            className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+          >
+            Download PDF
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+  );
 
-  const handleMouseLeave = useCallback(() => {
-    setIsDragging(false);
+  useEffect(() => {
+    if (!error && !isLoading) {
+      onToolbarLeftChange?.(toolbarLeft);
+      onToolbarRightChange?.(toolbarRight);
+    } else {
+      onToolbarLeftChange?.(null);
+      onToolbarRightChange?.(null);
+    }
+  }, [zoom, error, isLoading]);
+
+  useEffect(() => {
+    return () => {
+      onToolbarLeftChange?.(null);
+      onToolbarRightChange?.(null);
+    };
   }, []);
 
   useEffect(() => {
-    const videos = containerRef.current?.querySelectorAll("video");
+    const checkPdfFile = async () => {
+      try {
+        const response = await fetch(resumePath, { method: "HEAD" });
+        if (response.ok) {
+          setPdfUrl(resumePath);
 
-    const ensureVideoPlay = (video: HTMLVideoElement) => {
-      const playVideo = () => {
-        video.play().catch(() => {});
-      };
+          const contentLength = response.headers.get("content-length");
+          if (contentLength) {
+            const sizeInBytes = parseInt(contentLength);
+            const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(1);
+            setFileSize(`${sizeInMB} MB`);
+          }
 
-      video.addEventListener("pause", playVideo);
-      video.addEventListener("loadeddata", playVideo);
+          const lastMod = response.headers.get("last-modified");
+          if (lastMod) {
+            const date = new Date(lastMod);
+            setLastModified(
+              date.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              }),
+            );
+          } else {
+            setLastModified(
+              new Date().toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              }),
+            );
+          }
 
-      playVideo();
-
-      return () => {
-        video.removeEventListener("pause", playVideo);
-        video.removeEventListener("loadeddata", playVideo);
-      };
+          setIsLoading(false);
+        } else {
+          throw new Error("PDF not found");
+        }
+      } catch (err) {
+        setError(
+          "Resume not found. Please add resume.pdf to the public folder.",
+        );
+        setIsLoading(false);
+      }
     };
 
-    const cleanupFunctions: (() => void)[] = [];
+    checkPdfFile();
+  }, []);
 
-    videos?.forEach((video) => {
-      const cleanup = ensureVideoPlay(video as HTMLVideoElement);
-      if (cleanup) cleanupFunctions.push(cleanup);
-    });
-
-    return () => {
-      cleanupFunctions.forEach((cleanup) => cleanup());
-    };
-  }, [mediaItems]);
-
-  useEffect(() => {
-    if (!isDragging) return;
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isDragging, handleMouseMove, handleMouseUp]);
+  if (error) {
+    return (
+      <div className={`h-full flex flex-col bg-white ${className}`}>
+        <div className="flex-1 flex items-center justify-center bg-gray-50">
+          <div className="text-center p-8">
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              Oops! Sorry, Resume Not Found
+            </h3>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6 h-full overflow-hidden">
-      <div className="flex items-center justify-center h-full">
-        <div
-          ref={containerRef}
-          className="cursor-grab active:cursor-grabbing"
-          style={{ perspective: "1200px", width: "400px", height: "400px" }}
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-        >
-          <div
-            className="relative w-full h-full transition-transform duration-100"
-            style={{
-              transformStyle: "preserve-3d",
-              transform: `rotateY(${rotation}deg)`,
-              transformOrigin: "50% 50%",
-            }}
-          >
-            {mediaItems.map((item, index) => {
-              const angle = (360 / mediaItems.length) * index;
-              const translateZ = 125;
-              return (
-                <div
-                  key={index}
-                  className="absolute w-64 h-85 rounded-xl overflow-hidden"
-                  style={{
-                    left: "50%",
-                    top: "50%",
-                    transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${translateZ}px) rotateY(90deg)`,
-                    transformStyle: "preserve-3d",
-                  }}
+    <div
+      className={`h-full flex flex-col bg-white ${className}`}
+      ref={containerRef}
+    >
+      <div className="flex-1 relative overflow-hidden bg-gray-100">
+        {isLoading ? (
+          <div className="h-full flex items-center justify-center">
+            <Spinner />
+          </div>
+        ) : (
+          <div className="h-full overflow-auto">
+            <div
+              className="flex justify-center p-8"
+              style={{
+                minHeight: "100%",
+              }}
+            >
+              <div
+                className="bg-white shadow-2xl rounded-lg overflow-hidden"
+                style={{
+                  transform: `scale(${zoom / 100})`,
+                  transformOrigin: "top center",
+                  transition: "transform 0.2s ease-out",
+                  width: "600px",
+                  height: "800px",
+                  maxWidth: "100%",
+                }}
+              >
+                <object
+                  data={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
+                  type="application/pdf"
+                  className="w-full h-full"
+                  title="Resume PDF"
                 >
-                  {item.type === "image" ? (
-                    <Image
-                      src={item.src}
-                      alt={`Media ${index + 1}`}
-                      className="w-full h-full object-cover"
-                      draggable={false}
-                      width={208}
-                      height={208}
-                    />
-                  ) : (
-                    <video
-                      src={item.src}
-                      className="w-full h-full object-cover"
-                      playsInline
-                      autoPlay
-                      loop
-                      muted
-                    />
-                  )}
-                  <div
-                    className="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl"
-                    style={{
-                      transform: "rotateY(180deg)",
-                      backfaceVisibility: "hidden",
-                    }}
-                  >
-                    <div className="flex items-center justify-center h-full">
-                      <div className="text-white/40 text-sm font-mono">
-                        {item.type === "image" ? "Photo" : "Video"} {index + 1}
-                      </div>
+                  <div className="h-full flex items-center justify-center p-8">
+                    <div className="text-center">
+                      <FileText
+                        size={48}
+                        className="text-gray-400 mx-auto mb-4"
+                      />
+                      <p className="text-gray-600 mb-4">
+                        Unable to display PDF
+                      </p>
+                      <button
+                        onClick={handleDownload}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
+                      >
+                        Download to View
+                      </button>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                </object>
+              </div>
+            </div>
           </div>
+        )}
+      </div>
+
+      <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 bg-gray-50 text-xs text-gray-600">
+        <div className="flex items-center gap-4">
+          <span>1 page</span>
+          {fileSize && <span>{fileSize}</span>}
+        </div>
+
+        <div className="flex items-center gap-4">
+          {lastModified && <span>Last Modified {lastModified}</span>}
+          <span>{zoom}%</span>
         </div>
       </div>
     </div>
   );
-}
+};
+

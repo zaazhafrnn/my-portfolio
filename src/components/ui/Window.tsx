@@ -1,9 +1,13 @@
 "use client";
-
 import React, { FC } from "react";
 import { Position } from "@/types";
 import { X, Minus } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface WindowProps {
   id: number;
@@ -15,6 +19,9 @@ interface WindowProps {
   onMouseDown: (e: React.MouseEvent<Element>, id: number) => void;
   onBringToFront: (id: number) => void;
   children: React.ReactNode;
+  customToolbarLeft?: React.ReactNode;
+  customToolbarRight?: React.ReactNode;
+  showDefaultButtons?: boolean;
 }
 
 const Window: FC<WindowProps> = ({
@@ -27,6 +34,9 @@ const Window: FC<WindowProps> = ({
   onMouseDown,
   onBringToFront,
   children,
+  customToolbarLeft,
+  customToolbarRight,
+  showDefaultButtons = true,
 }) => {
   return (
     <div
@@ -45,60 +55,75 @@ const Window: FC<WindowProps> = ({
         onMouseDown={(e) => onMouseDown(e, id)}
       >
         <div className="flex items-center gap-2">
-          <div className="flex gap-1">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onClose(id);
-                    }}
-                    className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center group cursor-pointer"
+          {showDefaultButtons && (
+            <div className="flex gap-1">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onClose(id);
+                      }}
+                      className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center group cursor-pointer"
+                    >
+                      <X
+                        className="text-red-900 opacity-0 group-hover:opacity-100 transition-opacity"
+                        size={8}
+                        strokeWidth={4}
+                      />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="top"
+                    className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
                   >
-                    <X 
-                      className="text-red-900 opacity-0 group-hover:opacity-100 transition-opacity" 
-                      size={8} 
-                      strokeWidth={4} 
-                    />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="px-2 py-1 bg-gray-800 text-white text-xs rounded">
-                  Close
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onMinimize(id);
-                    }}
-                    className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors flex items-center justify-center group cursor-pointer"
+                    Close
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onMinimize(id);
+                      }}
+                      className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors flex items-center justify-center group cursor-pointer"
+                    >
+                      <Minus
+                        className="text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity"
+                        size={8}
+                        strokeWidth={4}
+                      />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="top"
+                    className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
                   >
-                    <Minus 
-                      className="text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity" 
-                      size={8} 
-                      strokeWidth={4} 
-                    />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="px-2 py-1 bg-gray-800 text-white text-xs rounded">
-                  Minimize
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            {/* <button className="w-3 h-3 bg-green-500 rounded-full hover:bg-green-600 transition-colors" /> */}
-            <button className="w-3 h-3 bg-gray-300 rounded-full" />
-          </div>
+                    Minimize
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <button className="w-3 h-3 bg-gray-300 rounded-full" />
+            </div>
+          )}
+
+          {customToolbarLeft && (
+            <div className="flex items-center gap-1 ml-2">
+              {customToolbarLeft}
+            </div>
+          )}
         </div>
-        <span className="text-sm font-medium text-gray-700 absolute left-1/2 transform -translate-x-1/2">
+
+        <span className="text-sm font-medium text-gray-700 absolute left-1/2 transform -translate-x-1/2 pointer-events-none">
           {title}
         </span>
-      </div>
 
+        <div className="flex items-center gap-1">{customToolbarRight}</div>
+      </div>
       <div className="h-[calc(100%-2rem)] overflow-auto">{children}</div>
     </div>
   );
