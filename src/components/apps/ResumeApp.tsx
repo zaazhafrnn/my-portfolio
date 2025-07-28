@@ -1,7 +1,6 @@
 "use client";
-
 import React, { useState, useEffect, useRef } from "react";
-import { ZoomIn, ZoomOut, Download, FileText } from "lucide-react";
+import { ZoomIn, ZoomOut, Download, Eye } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -124,6 +123,25 @@ export default function ResumeApp({
         <Tooltip>
           <TooltipTrigger asChild>
             <button
+              onClick={() => window.open(resumePath, "_blank")}
+              disabled={disabled}
+              className="p-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-default transition-colors cursor-pointer disabled:pointer-events-none"
+            >
+              <Eye size={12} />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent
+            side="bottom"
+            className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+          >
+            View PDF in New Tab
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
               onClick={handleDownload}
               disabled={disabled}
               className="p-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-default transition-colors cursor-pointer disabled:pointer-events-none"
@@ -182,7 +200,6 @@ export default function ResumeApp({
               }),
             );
           } else {
-            // fallback to today
             const today = new Date();
             setLastModified(
               today.toLocaleDateString("en-US", {
