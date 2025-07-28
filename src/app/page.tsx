@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Mail, Code } from "lucide-react";
 import Window from "@/components/ui/Window";
 import { useWindowManager } from "@/hooks/useWindowManager";
+import dynamic from "next/dynamic";
 import {
   // AboutApp,
   // ProjectsApp,
@@ -13,6 +14,14 @@ import {
   // PortfolioApp,
   // DocumentsApp,
 } from "@/components/apps";
+
+const MacOSDock = dynamic(
+  () =>
+    import("@/components/ui/shadcn-io/mac-os-dock").then(
+      (mod) => mod.MacOSDock,
+    ),
+  { ssr: false },
+);
 
 const apps = [
   {
@@ -40,7 +49,7 @@ const apps = [
   //   name: "Documents",
   //   icon: "/icons/weather.png",
   // },
-] as const;
+];
 
 const MacOSDesktop = () => {
   const {
@@ -74,6 +83,17 @@ const MacOSDesktop = () => {
             <p className="text-gray-500">Content for {appId}</p>
           </div>
         );
+    }
+  };
+
+  // Get list of open app IDs for the dock
+  const openAppIds = windows.map((window) => window.appId);
+
+  // Handle app click from dock
+  const handleAppClick = (appId: string) => {
+    const app = apps.find((a) => a.id === appId);
+    if (app) {
+      openWindow(app.id, app.name);
     }
   };
 
@@ -126,33 +146,14 @@ const MacOSDesktop = () => {
           ),
       )}
 
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-999">
-        <div className="bg-black/20 backdrop-blur-lg rounded-3xl px-1 py-1 shadow-lg border border-white/30">
-          <div className="flex items-center gap-2">
-            {apps.map((app) => {
-              const isOpen = windows.some((window) => window.appId === app.id);
-
-              return (
-                <div key={app.id} className="flex flex-col items-center">
-                  <button
-                    onClick={() => openWindow(app.id, app.name)}
-                    className="hover:scale-110 transition-transform duration-200"
-                    title={app.name}
-                  >
-                    <Image
-                      src={app.icon}
-                      alt={app.name}
-                      width={48}
-                      height={48}
-                    />
-                  </button>
-                  {isOpen && (
-                    <div className="w-1 h-1 rounded-full bg-black -mt-1 translate-y-0.5"></div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+      {/* New MacOS Dock */}
+      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-[999]">
+        <div className="flex justify-center">
+          <MacOSDock
+            apps={apps}
+            onAppClick={handleAppClick}
+            openApps={openAppIds}
+          />
         </div>
       </div>
 
