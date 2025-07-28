@@ -83,7 +83,7 @@ const PhotosApp: FC = () => {
           >
             {photos.map((photo, index) => {
               const angle = (360 / photos.length) * index;
-              const translateZ = 250;
+              const translateZ = 110;
               return (
                 <div
                   key={index}
@@ -91,23 +91,17 @@ const PhotosApp: FC = () => {
                   style={{
                     left: "50%",
                     top: "50%",
-                    transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${translateZ}px)`,
+                    transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${translateZ}px) rotateY(90deg)`,
                     transformStyle: "preserve-3d",
                   }}
                 >
-                  {/* front */}
                   <Image
                     src={photo}
                     alt={`Photo ${index + 1}`}
                     className="w-full h-full object-cover"
                     draggable={false}
-                    style={{ backfaceVisibility: "hidden" }}
                     width={208}
                     height={208}
-                  />
-                  <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"
-                    style={{ backfaceVisibility: "hidden" }}
                   />
                   <div
                     className="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl"
