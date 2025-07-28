@@ -9,6 +9,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Spinner } from "../ui/shadcn-io/spinner";
+import Image from "next/image";
 
 interface ResumeAppProps {
   className?: string;
@@ -225,45 +226,21 @@ export default function ResumeApp({
           </div>
         ) : (
           <div className="h-full overflow-auto">
-            <div
-              className="flex justify-center p-8"
-              style={{ minHeight: "100%" }}
-            >
+            <div className="w-max h-max p-8">
               <div
-                className="bg-white shadow-2xl rounded-lg overflow-hidden"
                 style={{
-                  transform: `scale(${zoom / 100})`,
-                  transformOrigin: "top center",
+                  transform: `scale(${zoom / 98})`,
+                  transformOrigin: "top left",
                   transition: "transform 0.2s ease-out",
-                  width: "600px",
-                  height: "800px",
-                  maxWidth: "100%",
                 }}
               >
-                <object
-                  data={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
-                  type="application/pdf"
-                  className="w-full h-full"
-                >
-                  <div className="h-full flex items-center justify-center p-8">
-                    <div className="text-center">
-                      <FileText
-                        size={48}
-                        className="text-gray-400 mx-auto mb-4"
-                      />
-                      <p className="text-gray-600 mb-4">
-                        Unable to display PDF
-                      </p>
-                      <button
-                        onClick={handleDownload}
-                        disabled={!!error}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Download to View
-                      </button>
-                    </div>
-                  </div>
-                </object>
+                <Image
+                  src="/folder/resume@3x.jpg"
+                  alt="Resume"
+                  width={2000}
+                  height={2000}
+                  className="shadow-2xl rounded-lg w-[600px] h-auto"
+                />
               </div>
             </div>
           </div>
