@@ -61,7 +61,6 @@ export default function ResumeApp({
               onClick={handleZoomOut}
               disabled={zoom <= 25}
               className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
-              title="Zoom Out"
             >
               <ZoomOut size={12} />
             </button>
@@ -81,7 +80,6 @@ export default function ResumeApp({
             <button
               onClick={resetZoom}
               className="px-2 py-1 text-xs font-medium text-gray-600 hover:bg-gray-200 rounded transition-colors min-w-[40px] cursor-pointer"
-              title="Reset Zoom"
             >
               {zoom}%
             </button>
@@ -102,7 +100,6 @@ export default function ResumeApp({
               onClick={handleZoomIn}
               disabled={zoom >= 300}
               className="p-1 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
-              title="Zoom In"
             >
               <ZoomIn size={12} />
             </button>
@@ -126,7 +123,6 @@ export default function ResumeApp({
             <button
               onClick={handleDownload}
               className="p-1 rounded hover:bg-gray-200 transition-colors cursor-pointer"
-              title="Download PDF"
             >
               <Download size={12} />
             </button>
@@ -143,13 +139,8 @@ export default function ResumeApp({
   );
 
   useEffect(() => {
-    if (!error && !isLoading) {
-      onToolbarLeftChange?.(toolbarLeft);
-      onToolbarRightChange?.(toolbarRight);
-    } else {
-      onToolbarLeftChange?.(null);
-      onToolbarRightChange?.(null);
-    }
+    onToolbarLeftChange?.(toolbarLeft);
+    onToolbarRightChange?.(toolbarRight);
   }, [zoom, error, isLoading]);
 
   useEffect(() => {
@@ -183,14 +174,6 @@ export default function ResumeApp({
                 day: "numeric",
               }),
             );
-          } else {
-            setLastModified(
-              new Date().toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "short",
-                day: "numeric",
-              }),
-            );
           }
 
           setIsLoading(false);
@@ -208,20 +191,6 @@ export default function ResumeApp({
     checkPdfFile();
   }, []);
 
-  if (error) {
-    return (
-      <div className={`h-full flex flex-col bg-white ${className}`}>
-        <div className="flex-1 flex items-center justify-center bg-gray-50">
-          <div className="text-center p-8">
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              Oops! Sorry, Resume Not Found
-            </h3>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       className={`h-full flex flex-col bg-white ${className}`}
@@ -232,13 +201,19 @@ export default function ResumeApp({
           <div className="h-full flex items-center justify-center">
             <Spinner />
           </div>
+        ) : error ? (
+          <div className="h-full flex items-center justify-center">
+            <div className="text-center p-8">
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                Oops! Sorry, Resume Not Found
+              </h3>
+            </div>
+          </div>
         ) : (
           <div className="h-full overflow-auto">
             <div
               className="flex justify-center p-8"
-              style={{
-                minHeight: "100%",
-              }}
+              style={{ minHeight: "100%" }}
             >
               <div
                 className="bg-white shadow-2xl rounded-lg overflow-hidden"
@@ -255,7 +230,6 @@ export default function ResumeApp({
                   data={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
                   type="application/pdf"
                   className="w-full h-full"
-                  title="Resume PDF"
                 >
                   <div className="h-full flex items-center justify-center p-8">
                     <div className="text-center">
@@ -268,7 +242,8 @@ export default function ResumeApp({
                       </p>
                       <button
                         onClick={handleDownload}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm"
+                        disabled={!!error}
+                        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Download to View
                       </button>
@@ -284,15 +259,16 @@ export default function ResumeApp({
       <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 bg-gray-50 text-xs text-gray-600">
         <div className="flex items-center gap-4">
           <span>1 page</span>
-          {fileSize && <span>{fileSize}</span>}
+          <span>{fileSize}</span>
         </div>
 
         <div className="flex items-center gap-4">
-          {lastModified && <span>Last Modified {lastModified}</span>}
+          <span>
+            {lastModified ? `Last Modified ${lastModified}` : "No file loaded"}
+          </span>
           <span>{zoom}%</span>
         </div>
       </div>
     </div>
   );
-};
-
+}
