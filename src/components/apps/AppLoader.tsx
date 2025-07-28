@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, lazy } from "react";
+import React, { FC, Suspense, lazy } from "react";
 
 // Lazy load app components
 const AppComponents = {
@@ -16,7 +16,7 @@ interface AppLoaderProps {
   appId: keyof typeof AppComponents;
 }
 
-const AppLoader: React.FC<AppLoaderProps> = ({ appId }) => {
+const AppLoader: FC<AppLoaderProps> = ({ appId }) => {
   const AppComponent = AppComponents[appId];
 
   if (!AppComponent) {

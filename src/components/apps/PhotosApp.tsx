@@ -1,18 +1,132 @@
 "use client";
+import React, {
+  FC,
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  MouseEvent as ReactMouseEvent,
+} from "react";
+import Image from "next/image";
 
-import React from "react";
+const PhotosApp: FC = () => {
+  const [rotation, setRotation] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [currentRotation, setCurrentRotation] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-const PhotosApp = () => {
+  const photos: string[] = [
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1511593358241-7eea1f3c84e5?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1433086966358-54859d0ed716?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&h=400&fit=crop",
+  ];
+
+  const handleMouseDown = (e: ReactMouseEvent<HTMLDivElement>) => {
+    setIsDragging(true);
+    setStartX(e.clientX);
+    setCurrentRotation(rotation);
+  };
+
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging) return;
+      const deltaX = e.clientX - startX;
+      const rotationDelta = deltaX * 0.5;
+      setRotation(currentRotation + rotationDelta);
+    },
+    [isDragging, startX, currentRotation],
+  );
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleMouseLeave = (_e: ReactMouseEvent<HTMLDivElement>) => {
+    setIsDragging(false);
+  };
+
+  useEffect(() => {
+    if (!isDragging) return;
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, handleMouseMove, handleMouseUp]);
+
   return (
-    <div className="p-6 h-full overflow-auto">
-      <h2 className="text-2xl font-bold mb-4 text-gray-800">Photos</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {Array.from({ length: 12 }, (_, i) => (
+    <div className="p-6 h-full overflow-hidden">
+      <div className="flex items-center justify-center h-full">
+        <div
+          ref={containerRef}
+          className="cursor-grab active:cursor-grabbing"
+          style={{ perspective: "1200px", width: "400px", height: "400px" }}
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+        >
           <div
-            key={i}
-            className="aspect-square bg-gradient-to-br from-gray-200 to-gray-400 rounded-lg hover:scale-105 transition-transform cursor-pointer"
-          />
-        ))}
+            className="relative w-full h-full transition-transform duration-100"
+            style={{
+              transformStyle: "preserve-3d",
+              transform: `rotateY(${rotation}deg)`,
+              transformOrigin: "50% 50%",
+            }}
+          >
+            {photos.map((photo, index) => {
+              const angle = (360 / photos.length) * index;
+              const translateZ = 250;
+              return (
+                <div
+                  key={index}
+                  className="absolute w-52 h-52 rounded-xl overflow-hidden"
+                  style={{
+                    left: "50%",
+                    top: "50%",
+                    transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${translateZ}px)`,
+                    transformStyle: "preserve-3d",
+                  }}
+                >
+                  {/* front */}
+                  <Image
+                    src={photo}
+                    alt={`Photo ${index + 1}`}
+                    className="w-full h-full object-cover"
+                    draggable={false}
+                    style={{ backfaceVisibility: "hidden" }}
+                    width={208}
+                    height={208}
+                  />
+                  <div
+                    className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"
+                    style={{ backfaceVisibility: "hidden" }}
+                  />
+                  <div
+                    className="absolute inset-0 w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl"
+                    style={{
+                      transform: "rotateY(180deg)",
+                      backfaceVisibility: "hidden",
+                    }}
+                  >
+                    <div className="flex items-center justify-center h-full">
+                      <div className="text-white/40 text-sm font-mono">
+                        Photo {index + 1}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

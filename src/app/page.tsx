@@ -17,7 +17,7 @@ import {
 const apps = [
   {
     id: "photos",
-    name: "Photos",
+    name: "Dump Photos",
     icon: "/icons/photos.png",
   },
   // {
