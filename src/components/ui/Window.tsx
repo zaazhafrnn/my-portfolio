@@ -54,7 +54,7 @@ const Window: FC<WindowProps> = ({
                       e.stopPropagation();
                       onClose(id);
                     }}
-                    className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center group"
+                    className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center group cursor-pointer"
                   >
                     <X 
                       className="text-red-900 opacity-0 group-hover:opacity-100 transition-opacity" 
@@ -76,7 +76,7 @@ const Window: FC<WindowProps> = ({
                       e.stopPropagation();
                       onMinimize(id);
                     }}
-                    className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors flex items-center justify-center group"
+                    className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors flex items-center justify-center group cursor-pointer"
                   >
                     <Minus 
                       className="text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity" 

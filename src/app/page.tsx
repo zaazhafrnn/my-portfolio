@@ -62,7 +62,7 @@ const MacOSDesktop = () => {
     switch (appId) {
       case "photos":
         return <PhotosApp />;
-      case "file":
+      case "resume":
         return <ResumeApp />;
       default:
         return (
@@ -73,10 +73,8 @@ const MacOSDesktop = () => {
     }
   };
 
-  // Get list of open app IDs for the dock
   const openAppIds = windows.map((window) => window.appId);
 
-  // Handle app click from dock
   const handleAppClick = (appId: string) => {
     const app = apps.find((a) => a.id === appId);
     if (app) {
@@ -133,7 +131,6 @@ const MacOSDesktop = () => {
           ),
       )}
 
-      {/* New MacOS Dock */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-[999]">
         <div className="flex justify-center">
           <MacOSDock
