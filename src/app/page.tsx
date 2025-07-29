@@ -159,6 +159,16 @@ export default function MacOSDesktop() {
     setBouncingApps([]);
   };
 
+  const minimizeAllWindows = () => {
+    windows.forEach((w) => {
+      if (!w.isMinimized) {
+        minimizeWindow(w.id);
+      }
+    });
+
+    setBouncingApps([]);
+  };
+
   return (
     <>
       <ContextMenu>
@@ -287,6 +297,17 @@ export default function MacOSDesktop() {
             Close All Window
             <ContextMenuShortcut>⌘⇧W</ContextMenuShortcut>
           </ContextMenuItem>
+          <ContextMenuItem
+            inset
+            onSelect={minimizeAllWindows}
+            disabled={
+              windows.length === 0 || windows.every((w) => w.isMinimized)
+            }
+          >
+            Minimize All Window
+            <ContextMenuShortcut>⌘M</ContextMenuShortcut>
+          </ContextMenuItem>
+
           <ContextMenuSeparator />
           <ContextMenuItem inset>
             Back
@@ -297,7 +318,7 @@ export default function MacOSDesktop() {
             <ContextMenuShortcut>⌘]</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuItem inset onSelect={() => window.location.reload()}>
-            Reload
+            Reload Page
             <ContextMenuShortcut>⌘R</ContextMenuShortcut>
           </ContextMenuItem>
           <ContextMenuSub>
