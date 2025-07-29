@@ -318,6 +318,7 @@ const MacOSDock: React.FC<MacOSDockProps> = ({
                       width={scaledSize}
                       height={scaledSize}
                       className="object-contain"
+                      draggable={false}
                       style={{
                         filter: `drop-shadow(0 ${scale > 1.2 ? Math.max(2, baseIconSize * 0.05) : Math.max(1, baseIconSize * 0.03)}px ${scale > 1.2 ? Math.max(4, baseIconSize * 0.1) : Math.max(2, baseIconSize * 0.06)}px rgba(0,0,0,${0.2 + (scale - 1) * 0.15}))`,
                       }}
