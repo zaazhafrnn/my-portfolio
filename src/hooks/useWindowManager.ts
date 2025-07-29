@@ -1,12 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import type {
-  Position,
-  WindowData,
-  DragState,
-  MouseEventHandler,
-} from "@/types";
+import type { DragState, MouseEventHandler, WindowData } from "@/types";
+import { useCallback, useState } from "react";
 
 export const useWindowManager = () => {
   const [windows, setWindows] = useState<WindowData[]>([]);
@@ -125,11 +120,16 @@ export const useWindowManager = () => {
     setDragState({ isDragging: false, offset: { x: 0, y: 0 } });
   }, []);
 
+  const closeAllWindows = () => {
+    setWindows([]);
+  };
+
   return {
     windows,
     openWindow,
     closeWindow,
     minimizeWindow,
+    closeAllWindows,
     bringToFront,
     handleMouseDown,
     handleMouseMove,

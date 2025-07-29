@@ -3,7 +3,7 @@
 import { gsap } from "gsap";
 import { useEffect, useRef } from "react";
 
-const BIG_TEXT = "portfolio.";
+const BIG_TEXT = "portfolio✨";
 const CURVE_TEXT = "welcome to my";
 
 export const WelcomeText = () => {
@@ -71,7 +71,7 @@ export const WelcomeText = () => {
         </svg>
       </div>
 
-      <div className="text-[64px] md:text-[88px] font-semibold z-10">
+      <div className="text-[64px] md:text-[88px] font-semibold translate-x-14 z-10">
         {BIG_TEXT.split("").map((char, i) => (
           <span
             key={i}
