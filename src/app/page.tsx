@@ -2,19 +2,19 @@
 import { PhotosApp, ResumeApp } from "@/components/apps";
 import { WelcomeText } from "@/components/ui/AnimatedText";
 import {
-    ContextMenu,
-    ContextMenuCheckboxItem,
-    ContextMenuContent,
-    ContextMenuItem,
-    ContextMenuLabel,
-    ContextMenuRadioGroup,
-    ContextMenuRadioItem,
-    ContextMenuSeparator,
-    ContextMenuShortcut,
-    ContextMenuSub,
-    ContextMenuSubContent,
-    ContextMenuSubTrigger,
-    ContextMenuTrigger,
+  ContextMenu,
+  ContextMenuCheckboxItem,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
+  ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import Window from "@/components/ui/Window";
@@ -60,7 +60,7 @@ const apps = [
 ];
 
 const WINDOW_SIZES: Record<string, { width: number; height: number }> = {
-  resume: { width: 600, height: 530 },
+  resume: { width: 660, height: 530 },
 };
 
 export default function MacOSDesktop() {
@@ -135,11 +135,28 @@ export default function MacOSDesktop() {
 
   const openAppIds = windows.map((window) => window.appId);
 
+  const [bouncingApps, setBouncingApps] = useState<string[]>([]);
+
   const handleAppClick = (appId: string) => {
     const app = apps.find((a) => a.id === appId);
-    if (app) {
-      openWindow(app.id, app.name);
+    if (!app) return;
+
+    const isAlreadyOpen = windows.some((w) => w.appId === appId);
+
+    openWindow(app.id, app.name);
+
+    if (!isAlreadyOpen && !bouncingApps.includes(app.id)) {
+      setBouncingApps((prev) => [...prev, app.id]);
     }
+  };
+
+  const stopBouncing = (appId: string) => {
+    setBouncingApps((prev) => prev.filter((id) => id !== appId));
+  };
+
+  const handleCloseAllWindows = () => {
+    closeAllWindows();
+    setBouncingApps([]);
   };
 
   return (
@@ -182,9 +199,18 @@ export default function MacOSDesktop() {
                     position={window.position}
                     zIndex={window.zIndex}
                     onClose={closeWindow}
-                    onMinimize={minimizeWindow}
-                    onMouseDown={handleMouseDown}
-                    onBringToFront={bringToFront}
+                    onMinimize={() => {
+                      minimizeWindow(window.id);
+                      stopBouncing(window.appId);
+                    }}
+                    onMouseDown={(e) => {
+                      handleMouseDown(e, window.id);
+                      stopBouncing(window.appId);
+                    }}
+                    onBringToFront={() => {
+                      bringToFront(window.id);
+                      stopBouncing(window.appId);
+                    }}
                     customToolbarLeft={windowToolbarContent[window.id]?.left}
                     customToolbarRight={windowToolbarContent[window.id]?.right}
                     width={WINDOW_SIZES[window.appId]?.width}
@@ -211,6 +237,8 @@ export default function MacOSDesktop() {
                   apps={apps}
                   onAppClick={handleAppClick}
                   openApps={openAppIds}
+                  bouncingApps={bouncingApps}
+                  stopBounce={stopBouncing}
                 />
               </div>
             </div>
@@ -253,7 +281,7 @@ export default function MacOSDesktop() {
         <ContextMenuContent className="w-52">
           <ContextMenuItem
             inset
-            onSelect={closeAllWindows}
+            onSelect={handleCloseAllWindows}
             disabled={windows.length === 0}
           >
             Close All Window

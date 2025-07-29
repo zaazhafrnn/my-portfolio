@@ -1,15 +1,13 @@
 "use client";
-
-import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface DockApp {
   id: string;
@@ -21,6 +19,8 @@ interface MacOSDockProps {
   apps: DockApp[];
   onAppClick: (appId: string) => void;
   openApps?: string[];
+  bouncingApps?: string[];
+  stopBounce?: (appId: string) => void;
   className?: string;
 }
 
@@ -28,6 +28,8 @@ const MacOSDock: React.FC<MacOSDockProps> = ({
   apps,
   onAppClick,
   openApps = [],
+  bouncingApps = [],
+  stopBounce,
   className = "",
 }) => {
   const [mouseX, setMouseX] = useState<number | null>(null);
@@ -219,6 +221,7 @@ const MacOSDock: React.FC<MacOSDockProps> = ({
   };
 
   const handleAppClick = (appId: string, index: number) => {
+    if (stopBounce) stopBounce(appId);
     if (iconRefs.current[index]) {
       if (typeof window !== "undefined" && (window as any).gsap) {
         const gsap = (window as any).gsap;
@@ -295,7 +298,10 @@ const MacOSDock: React.FC<MacOSDockProps> = ({
                     ref={(el) => {
                       iconRefs.current[index] = el;
                     }}
-                    className="absolute cursor-pointer flex flex-col items-center justify-end"
+                    className={cn(
+                      "absolute cursor-pointer flex flex-col items-center justify-end",
+                      bouncingApps.includes(app.id) && "animate-bounce",
+                    )}
                     onClick={() => handleAppClick(app.id, index)}
                     style={{
                       left: `${position - scaledSize / 2}px`,
