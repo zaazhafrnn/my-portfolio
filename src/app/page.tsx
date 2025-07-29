@@ -1,12 +1,12 @@
 "use client";
-
-import React, { Suspense, useState } from "react";
-import Image from "next/image";
+import { PhotosApp, ResumeApp } from "@/components/apps";
+import { WelcomeText } from "@/components/ui/AnimatedText";
+import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import Window from "@/components/ui/Window";
 import { useWindowManager } from "@/hooks/useWindowManager";
 import dynamic from "next/dynamic";
-import { PhotosApp, ResumeApp } from "@/components/apps";
-import { Spinner } from "@/components/ui/shadcn-io/spinner";
+import Image from "next/image";
+import React, { Suspense, useState } from "react";
 
 const MacOSDock = dynamic(
   () =>
@@ -145,7 +145,11 @@ export default function MacOSDesktop() {
                 `,
             backgroundSize: "150px 150px, 150px 150px, 25px 25px, 25px 25px",
           }}
-        ></div>
+        >
+          <div className="absolute inset-0 flex items-center justify-center z-0">
+            <WelcomeText />
+          </div>
+        </div>
       </div>
 
       {windows.map(
@@ -169,7 +173,9 @@ export default function MacOSDesktop() {
               <Suspense
                 fallback={
                   <div className="p-6 h-full flex items-center justify-center">
-                    <p className="text-gray-500"><Spinner /></p>
+                    <p className="text-gray-500">
+                      <Spinner />
+                    </p>
                   </div>
                 }
               >
