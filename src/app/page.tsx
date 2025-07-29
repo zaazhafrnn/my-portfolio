@@ -171,13 +171,13 @@ export default function MacOSDesktop() {
 
   return (
     <>
-      <ContextMenu>
-        <ContextMenuTrigger>
-          <div
-            className="h-screen w-screen bg-gray-50 relative overflow-hidden select-none"
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-          >
+      <div
+        className="h-screen w-screen bg-gray-50 relative overflow-hidden select-none"
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+      >
+        <ContextMenu>
+          <ContextMenuTrigger>
             <div className="absolute inset-0">
               <div
                 className="w-full h-full"
@@ -198,10 +198,74 @@ export default function MacOSDesktop() {
                 </div>
               </div>
             </div>
+          </ContextMenuTrigger>
+          <ContextMenuContent className="w-52">
+            <ContextMenuItem
+              inset
+              onSelect={handleCloseAllWindows}
+              disabled={windows.length === 0}
+            >
+              Close All Window
+              <ContextMenuShortcut>⌘⇧W</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem
+              inset
+              onSelect={minimizeAllWindows}
+              disabled={
+                windows.length === 0 || windows.every((w) => w.isMinimized)
+              }
+            >
+              Minimize All Window
+              <ContextMenuShortcut>⌘M</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem inset>
+              Back
+              <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem inset disabled>
+              Forward
+              <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem inset onSelect={() => window.location.reload()}>
+              Reload Page
+              <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuSub>
+              <ContextMenuSubTrigger inset>More Tools</ContextMenuSubTrigger>
+              <ContextMenuSubContent className="w-44">
+                <ContextMenuItem>Save Page...</ContextMenuItem>
+                <ContextMenuItem>Create Shortcut...</ContextMenuItem>
+                <ContextMenuItem>Name Window...</ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem>Developer Tools</ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
+              </ContextMenuSubContent>
+            </ContextMenuSub>
+            <ContextMenuSeparator />
+            <ContextMenuCheckboxItem checked>
+              Show Bookmarks
+            </ContextMenuCheckboxItem>
+            <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
+            <ContextMenuSeparator />
+            <ContextMenuRadioGroup value="pedro">
+              <ContextMenuLabel inset>People</ContextMenuLabel>
+              <ContextMenuRadioItem value="pedro">
+                Pedro Duarte
+              </ContextMenuRadioItem>
+              <ContextMenuRadioItem value="colm">
+                Colm Tuite
+              </ContextMenuRadioItem>
+            </ContextMenuRadioGroup>
+          </ContextMenuContent>
+        </ContextMenu>
 
-            {windows.map(
-              (window) =>
-                !window.isMinimized && (
+        {windows.map(
+          (window) =>
+            !window.isMinimized && (
+              <ContextMenu key={window.id}>
+                <ContextMenuTrigger>
                   <Window
                     key={window.id}
                     id={window.id}
@@ -238,116 +302,100 @@ export default function MacOSDesktop() {
                       {getWindowContent(window.appId, window.id)}
                     </Suspense>
                   </Window>
-                ),
-            )}
+                </ContextMenuTrigger>
+                <ContextMenuContent className="w-44">
+                  <ContextMenuItem
+                    onSelect={() => {
+                      bringToFront(window.id);
+                      stopBouncing(window.appId);
+                    }}
+                  >
+                    Bring to Front
+                  </ContextMenuItem>
+                  <ContextMenuItem
+                    onSelect={() => {
+                      minimizeWindow(window.id);
+                      stopBouncing(window.appId);
+                    }}
+                  >
+                    Minimize Window
+                    <ContextMenuShortcut>⌘M</ContextMenuShortcut>
+                  </ContextMenuItem>
+                  <ContextMenuItem
+                    onSelect={() => {
+                      closeWindow(window.id);
+                      stopBouncing(window.appId);
+                    }}
+                    className="text-red-600"
+                  >
+                    Close Window
+                    <ContextMenuShortcut>⌘W</ContextMenuShortcut>
+                  </ContextMenuItem>
+                  <ContextMenuSeparator />
+                  <ContextMenuItem disabled>
+                    Back
+                    <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+                  </ContextMenuItem>
+                  <ContextMenuItem>
+                    Reload Window
+                    <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+                  </ContextMenuItem>
+                  <ContextMenuItem disabled>
+                    Rename
+                    <ContextMenuShortcut>F2</ContextMenuShortcut>
+                  </ContextMenuItem>
+                  <ContextMenuItem disabled>Always on Top</ContextMenuItem>
+                </ContextMenuContent>
+              </ContextMenu>
+            ),
+        )}
 
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50">
-              <div className="flex justify-center">
-                <MacOSDock
-                  apps={apps}
-                  onAppClick={handleAppClick}
-                  openApps={openAppIds}
-                  bouncingApps={bouncingApps}
-                  stopBounce={stopBouncing}
-                />
-              </div>
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="flex justify-center">
+            <MacOSDock
+              apps={apps}
+              onAppClick={handleAppClick}
+              openApps={openAppIds}
+              bouncingApps={bouncingApps}
+              stopBounce={stopBouncing}
+            />
+          </div>
+        </div>
+
+        <div className="absolute top-0 left-0 right-0 h-8.5 bg-black/2 backdrop-blur-sm border-b border-black/20">
+          <div className="flex items-center justify-between h-full px-4 text-black text-base">
+            <div className="flex items-center gap-4">
+              <Image
+                src={"/icons/apple-logo-black.svg"}
+                alt="My Icon"
+                width={18}
+                height={18}
+              />
+              <span className="font-semibold">Portfolio</span>
+              <span>File</span>
+              <span>Edit</span>
+              <span>View</span>
             </div>
-
-            <div className="absolute top-0 left-0 right-0 h-8.5 bg-black/2 backdrop-blur-sm border-b border-black/20">
-              <div className="flex items-center justify-between h-full px-4 text-black text-base">
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={"/icons/apple-logo-black.svg"}
-                    alt="My Icon"
-                    width={18}
-                    height={18}
-                  />
-                  <span className="font-semibold">Portfolio</span>
-                  <span>File</span>
-                  <span>Edit</span>
-                  <span>View</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span>
-                    {new Date()
-                      .toLocaleDateString("en-US", {
-                        weekday: "short",
-                        month: "short",
-                        day: "numeric",
-                      })
-                      .replace(",", "")}
-                  </span>
-                  <span>
-                    {new Date().toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </span>
-                </div>
-              </div>
+            <div className="flex items-center gap-2">
+              <span>
+                {new Date()
+                  .toLocaleDateString("en-US", {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                  })
+                  .replace(",", "")}
+              </span>
+              <span>
+                {new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
             </div>
           </div>
-        </ContextMenuTrigger>
-        <ContextMenuContent className="w-52">
-          <ContextMenuItem
-            inset
-            onSelect={handleCloseAllWindows}
-            disabled={windows.length === 0}
-          >
-            Close All Window
-            <ContextMenuShortcut>⌘⇧W</ContextMenuShortcut>
-          </ContextMenuItem>
-          <ContextMenuItem
-            inset
-            onSelect={minimizeAllWindows}
-            disabled={
-              windows.length === 0 || windows.every((w) => w.isMinimized)
-            }
-          >
-            Minimize All Window
-            <ContextMenuShortcut>⌘M</ContextMenuShortcut>
-          </ContextMenuItem>
-
-          <ContextMenuSeparator />
-          <ContextMenuItem inset>
-            Back
-            <ContextMenuShortcut>⌘[</ContextMenuShortcut>
-          </ContextMenuItem>
-          <ContextMenuItem inset disabled>
-            Forward
-            <ContextMenuShortcut>⌘]</ContextMenuShortcut>
-          </ContextMenuItem>
-          <ContextMenuItem inset onSelect={() => window.location.reload()}>
-            Reload Page
-            <ContextMenuShortcut>⌘R</ContextMenuShortcut>
-          </ContextMenuItem>
-          <ContextMenuSub>
-            <ContextMenuSubTrigger inset>More Tools</ContextMenuSubTrigger>
-            <ContextMenuSubContent className="w-44">
-              <ContextMenuItem>Save Page...</ContextMenuItem>
-              <ContextMenuItem>Create Shortcut...</ContextMenuItem>
-              <ContextMenuItem>Name Window...</ContextMenuItem>
-              <ContextMenuSeparator />
-              <ContextMenuItem>Developer Tools</ContextMenuItem>
-              <ContextMenuSeparator />
-              <ContextMenuItem variant="destructive">Delete</ContextMenuItem>
-            </ContextMenuSubContent>
-          </ContextMenuSub>
-          <ContextMenuSeparator />
-          <ContextMenuCheckboxItem checked>
-            Show Bookmarks
-          </ContextMenuCheckboxItem>
-          <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
-          <ContextMenuSeparator />
-          <ContextMenuRadioGroup value="pedro">
-            <ContextMenuLabel inset>People</ContextMenuLabel>
-            <ContextMenuRadioItem value="pedro">
-              Pedro Duarte
-            </ContextMenuRadioItem>
-            <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
-          </ContextMenuRadioGroup>
-        </ContextMenuContent>
-      </ContextMenu>
+        </div>
+      </div>
     </>
   );
 }
