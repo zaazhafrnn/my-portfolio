@@ -1,6 +1,12 @@
 "use client";
 import { PhotosApp, ResumeApp } from "@/components/apps";
 import { WelcomeText } from "@/components/ui/AnimatedText";
+import {
+    ContextMenu,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import Window from "@/components/ui/Window";
 import { useWindowManager } from "@/hooks/useWindowManager";
@@ -127,107 +133,120 @@ export default function MacOSDesktop() {
   };
 
   return (
-    <div
-      className="h-screen w-screen bg-gray-50 relative overflow-hidden select-none"
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-    >
-      <div className="absolute inset-0">
-        <div
-          className="w-full h-full"
-          style={{
-            backgroundColor: "rgb(248, 249, 250)",
-            backgroundImage: `
+    <>
+      <ContextMenu>
+        <ContextMenuTrigger>
+          <div
+            className="h-screen w-screen bg-gray-50 relative overflow-hidden select-none"
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+          >
+            <div className="absolute inset-0">
+              <div
+                className="w-full h-full"
+                style={{
+                  backgroundColor: "rgb(248, 249, 250)",
+                  backgroundImage: `
                   linear-gradient(rgb(226, 232, 240) 1px, transparent 2px),
                   linear-gradient(90deg, rgb(226, 232, 240) 1px, transparent 2px),
                   linear-gradient(rgb(226, 232, 240) 1px, transparent 2px),
                   linear-gradient(90deg, rgb(226, 232, 240) 1px, transparent 2px)
                 `,
-            backgroundSize: "150px 150px, 150px 150px, 25px 25px, 25px 25px",
-          }}
-        >
-          <div className="absolute inset-0 flex items-center justify-center z-0">
-            <WelcomeText />
-          </div>
-        </div>
-      </div>
-
-      {windows.map(
-        (window) =>
-          !window.isMinimized && (
-            <Window
-              key={window.id}
-              id={window.id}
-              title={window.title}
-              position={window.position}
-              zIndex={window.zIndex}
-              onClose={closeWindow}
-              onMinimize={minimizeWindow}
-              onMouseDown={handleMouseDown}
-              onBringToFront={bringToFront}
-              customToolbarLeft={windowToolbarContent[window.id]?.left}
-              customToolbarRight={windowToolbarContent[window.id]?.right}
-              width={WINDOW_SIZES[window.appId]?.width}
-              height={WINDOW_SIZES[window.appId]?.height}
-            >
-              <Suspense
-                fallback={
-                  <div className="p-6 h-full flex items-center justify-center">
-                    <p className="text-gray-500">
-                      <Spinner />
-                    </p>
-                  </div>
-                }
+                  backgroundSize:
+                    "150px 150px, 150px 150px, 25px 25px, 25px 25px",
+                }}
               >
-                {getWindowContent(window.appId, window.id)}
-              </Suspense>
-            </Window>
-          ),
-      )}
+                <div className="absolute inset-0 flex items-center justify-center z-0">
+                  <WelcomeText />
+                </div>
+              </div>
+            </div>
 
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-[999]">
-        <div className="flex justify-center">
-          <MacOSDock
-            apps={apps}
-            onAppClick={handleAppClick}
-            openApps={openAppIds}
-          />
-        </div>
-      </div>
+            {windows.map(
+              (window) =>
+                !window.isMinimized && (
+                  <Window
+                    key={window.id}
+                    id={window.id}
+                    title={window.title}
+                    position={window.position}
+                    zIndex={window.zIndex}
+                    onClose={closeWindow}
+                    onMinimize={minimizeWindow}
+                    onMouseDown={handleMouseDown}
+                    onBringToFront={bringToFront}
+                    customToolbarLeft={windowToolbarContent[window.id]?.left}
+                    customToolbarRight={windowToolbarContent[window.id]?.right}
+                    width={WINDOW_SIZES[window.appId]?.width}
+                    height={WINDOW_SIZES[window.appId]?.height}
+                  >
+                    <Suspense
+                      fallback={
+                        <div className="p-6 h-full flex items-center justify-center">
+                          <p className="text-gray-500">
+                            <Spinner />
+                          </p>
+                        </div>
+                      }
+                    >
+                      {getWindowContent(window.appId, window.id)}
+                    </Suspense>
+                  </Window>
+                ),
+            )}
 
-      <div className="absolute top-0 left-0 right-0 h-8.5 bg-black/2 backdrop-blur-sm border-b border-black/20">
-        <div className="flex items-center justify-between h-full px-4 text-black text-base">
-          <div className="flex items-center gap-4">
-            <Image
-              src={"/icons/apple-logo-black.svg"}
-              alt="My Icon"
-              width={18}
-              height={18}
-            />
-            <span className="font-semibold">Portfolio</span>
-            <span>File</span>
-            <span>Edit</span>
-            <span>View</span>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50">
+              <div className="flex justify-center">
+                <MacOSDock
+                  apps={apps}
+                  onAppClick={handleAppClick}
+                  openApps={openAppIds}
+                />
+              </div>
+            </div>
+
+            <div className="absolute top-0 left-0 right-0 h-8.5 bg-black/2 backdrop-blur-sm border-b border-black/20">
+              <div className="flex items-center justify-between h-full px-4 text-black text-base">
+                <div className="flex items-center gap-4">
+                  <Image
+                    src={"/icons/apple-logo-black.svg"}
+                    alt="My Icon"
+                    width={18}
+                    height={18}
+                  />
+                  <span className="font-semibold">Portfolio</span>
+                  <span>File</span>
+                  <span>Edit</span>
+                  <span>View</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>
+                    {new Date()
+                      .toLocaleDateString("en-US", {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                      })
+                      .replace(",", "")}
+                  </span>
+                  <span>
+                    {new Date().toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <span>
-              {new Date()
-                .toLocaleDateString("en-US", {
-                  weekday: "short",
-                  month: "short",
-                  day: "numeric",
-                })
-                .replace(",", "")}
-            </span>
-            <span>
-              {new Date().toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+        </ContextMenuTrigger>
+        <ContextMenuContent>
+          <ContextMenuItem>Profile</ContextMenuItem>
+          <ContextMenuItem>Billing</ContextMenuItem>
+          <ContextMenuItem>Team</ContextMenuItem>
+          <ContextMenuItem>Subscription</ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
+    </>
   );
 }
