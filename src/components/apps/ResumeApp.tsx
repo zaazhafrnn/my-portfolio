@@ -1,14 +1,14 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
-import { ZoomIn, ZoomOut, Download, Eye } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Spinner } from "../ui/shadcn-io/spinner";
+import { Download, Eye, ZoomIn, ZoomOut } from "lucide-react";
 import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+import { Spinner } from "../ui/shadcn-io/spinner";
 
 interface ResumeAppProps {
   className?: string;
@@ -38,15 +38,6 @@ export default function ResumeApp({
 
   const handleZoomOut = () => {
     setZoom((prev) => Math.max(prev - 10, 50));
-  };
-
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = resumePath;
-    link.download = "resume.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   const resetZoom = () => {
@@ -141,13 +132,19 @@ export default function ResumeApp({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <button
-              onClick={handleDownload}
-              disabled={disabled}
-              className="p-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-default transition-colors cursor-pointer disabled:pointer-events-none"
+            <a
+              href={disabled ? undefined : resumePath}
+              onClick={disabled ? (e) => e.preventDefault() : undefined}
+              className={`p-1 rounded bg-gray-200 transition-colors ${
+                disabled
+                  ? "opacity-50 cursor-default pointer-events-none"
+                  : "hover:bg-gray-300 cursor-pointer"
+              }`}
+              download={disabled ? undefined : "Achmad Zhafran's Resume.pdf"}
+              aria-disabled={disabled}
             >
               <Download size={12} />
-            </button>
+            </a>
           </TooltipTrigger>
           <TooltipContent
             side="bottom"
@@ -267,9 +264,12 @@ export default function ResumeApp({
       <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 bg-gray-50 text-xs text-gray-600">
         <div className="flex items-center gap-4">
           <span>Page 1 of 1</span>
-          <span>{fileSize}</span>
+          <span>.pdf</span>
         </div>
-
+        <span>
+          💡 Pro tip: Drag the image wherever you need, or hit the eye icon to
+          unleash full PDF experience!
+        </span>
         <div className="flex items-center gap-4">
           <span>
             {lastModified
