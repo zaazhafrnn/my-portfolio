@@ -53,6 +53,7 @@ export default function DesktopBackground({
           inset
           onSelect={handleCloseAllWindows}
           disabled={windows.length === 0}
+          className="text-red-600"
         >
           Close All Window
           <ContextMenuShortcut>⌘⇧W</ContextMenuShortcut>
