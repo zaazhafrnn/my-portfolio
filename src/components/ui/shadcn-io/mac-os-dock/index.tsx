@@ -1,10 +1,4 @@
 "use client";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import React, { useCallback, useEffect, useRef, useState } from "react";
@@ -290,67 +284,53 @@ const MacOSDock: React.FC<MacOSDockProps> = ({
           const scaledSize = baseIconSize * scale;
 
           return (
-            <TooltipProvider key={app.id}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div
-                    key={app.id}
-                    ref={(el) => {
-                      iconRefs.current[index] = el;
-                    }}
-                    className={cn(
-                      "absolute cursor-pointer flex flex-col items-center justify-end",
-                      bouncingApps.includes(app.id) && "animate-bounce",
-                    )}
-                    onClick={() => handleAppClick(app.id, index)}
-                    style={{
-                      left: `${position - scaledSize / 2}px`,
-                      bottom: "0px",
-                      width: `${scaledSize}px`,
-                      height: `${scaledSize}px`,
-                      transformOrigin: "bottom center",
-                      zIndex: Math.round(scale * 10),
-                    }}
-                  >
-                    <Image
-                      src={app.icon}
-                      alt={app.name}
-                      width={scaledSize}
-                      height={scaledSize}
-                      className="object-contain"
-                      draggable={false}
-                      style={{
-                        filter: `drop-shadow(0 ${scale > 1.2 ? Math.max(2, baseIconSize * 0.05) : Math.max(1, baseIconSize * 0.03)}px ${scale > 1.2 ? Math.max(4, baseIconSize * 0.1) : Math.max(2, baseIconSize * 0.06)}px rgba(0,0,0,${0.2 + (scale - 1) * 0.15}))`,
-                      }}
-                    />
+            <div
+              key={app.id}
+              ref={(el) => {
+                iconRefs.current[index] = el;
+              }}
+              className={cn(
+                "absolute cursor-pointer flex flex-col items-center justify-end",
+                bouncingApps.includes(app.id) && "animate-bounce",
+              )}
+              onClick={() => handleAppClick(app.id, index)}
+              style={{
+                left: `${position - scaledSize / 2}px`,
+                bottom: "0px",
+                width: `${scaledSize}px`,
+                height: `${scaledSize}px`,
+                transformOrigin: "bottom center",
+                zIndex: Math.round(scale * 10),
+              }}
+            >
+              <Image
+                src={app.icon}
+                alt={app.name}
+                width={scaledSize}
+                height={scaledSize}
+                className="object-contain"
+                draggable={false}
+                style={{
+                  filter: `drop-shadow(0 ${scale > 1.2 ? Math.max(2, baseIconSize * 0.05) : Math.max(1, baseIconSize * 0.03)}px ${scale > 1.2 ? Math.max(4, baseIconSize * 0.1) : Math.max(2, baseIconSize * 0.06)}px rgba(0,0,0,${0.2 + (scale - 1) * 0.15}))`,
+                }}
+              />
 
-                    {openApps.includes(app.id) && (
-                      <div
-                        className="absolute"
-                        style={{
-                          bottom: `${Math.max(-2, -baseIconSize * 0.05)}px`,
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: `${Math.max(3, baseIconSize * 0.06)}px`,
-                          height: `${Math.max(3, baseIconSize * 0.06)}px`,
-                          borderRadius: "50%",
-                          backgroundColor: "rgba(0, 0, 0, 1)",
-                          boxShadow: "0 0 4px rgba(0, 0, 0, 0.3)",
-                        }}
-                      />
-                    )}
-                  </div>
-                </TooltipTrigger>
-
-                <TooltipContent
-                  side="top"
-                  sideOffset={8}
-                  className="px-2 py-1 bg-black text-white text-xs rounded shadow-md"
-                >
-                  {app.name}
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+              {openApps.includes(app.id) && (
+                <div
+                  className="absolute"
+                  style={{
+                    bottom: `${Math.max(-2, -baseIconSize * 0.05)}px`,
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    width: `${Math.max(3, baseIconSize * 0.06)}px`,
+                    height: `${Math.max(3, baseIconSize * 0.06)}px`,
+                    borderRadius: "50%",
+                    backgroundColor: "rgba(0, 0, 0, 1)",
+                    boxShadow: "0 0 4px rgba(0, 0, 0, 0.3)",
+                  }}
+                />
+              )}
+            </div>
           );
         })}
       </div>
