@@ -1,12 +1,13 @@
 "use client";
-
-import { FC, Suspense, lazy } from "react";
-import { Spinner } from "../ui/shadcn-io/spinner";
+import { FC } from "react";
+import PhotosApp from "./PhotosApp";
+import ResumeApp from "./ResumeApp";
+import SystemInfoApp from "./SystemInfoApp";
 
 const AppComponents = {
-  photos: lazy(() => import("./PhotosApp")),
-  resume: lazy(() => import("./ResumeApp")),
-  systemInfo: lazy(() => import("./SystemInfoApp")),
+  photos: PhotosApp,
+  resume: ResumeApp,
+  systemInfo: SystemInfoApp,
 };
 
 interface AppLoaderProps {
@@ -15,7 +16,7 @@ interface AppLoaderProps {
 
 const AppLoader: FC<AppLoaderProps> = ({ appId }) => {
   const AppComponent = AppComponents[appId];
-
+  
   if (!AppComponent) {
     return (
       <div className="p-6 h-full flex items-center justify-center">
@@ -23,18 +24,8 @@ const AppLoader: FC<AppLoaderProps> = ({ appId }) => {
       </div>
     );
   }
-
-  return (
-    <Suspense
-      fallback={
-        <div className="p-6 h-full flex items-center justify-center">
-          <Spinner />
-        </div>
-      }
-    >
-      <AppComponent />
-    </Suspense>
-  );
+  
+  return <AppComponent />;
 };
 
 export default AppLoader;

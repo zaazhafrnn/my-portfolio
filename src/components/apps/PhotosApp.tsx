@@ -161,7 +161,7 @@ export default function PhotosApp() {
                       style={{
                         left: "50%",
                         top: "50%",
-                        transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${translateZ}px) rotateY(90deg)`,
+                        transform: `translate(-50%, -50%) rotateY(${angle}deg) translateZ(${translateZ}px) rotateY(270deg)`,
                         transformStyle: "preserve-3d",
                       }}
                     >
