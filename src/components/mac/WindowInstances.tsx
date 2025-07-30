@@ -75,7 +75,7 @@ export default function WindowInstances({
               </Window>
             </ContextMenuTrigger>
             <ContextMenuContent className="w-44">
-              <ContextMenuLabel className="text-xs text-center text-muted-foreground">
+              <ContextMenuLabel className="text-xs text-center -mt-1 h-6 text-muted-foreground">
                 {window.title}
               </ContextMenuLabel>
               <ContextMenuSeparator />
