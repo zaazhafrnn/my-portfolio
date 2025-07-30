@@ -1,5 +1,5 @@
 "use client";
-import { PhotosApp, ResumeApp } from "@/components/apps";
+import { PhotosApp, ResumeApp, SystemInfoApp } from "@/components/apps";
 import DesktopBackground from "@/components/mac/DesktopBackground";
 import TopBar from "@/components/mac/TopBar";
 import WindowInstances from "@/components/mac/WindowInstances";
@@ -18,6 +18,7 @@ const MacOSDock = dynamic(
 const apps = [
   { id: "photos", name: "Photo Dumps", icon: "/icons/photos.png" },
   { id: "resume", name: "Resume.pdf", icon: "/icons/file.png" },
+  { id: "systemInfo", name: "System Information", icon: "/icons/settings.png" },
   { id: "portfolio", name: "Portfolio", icon: "/icons/notes.png" },
   { id: "contact", name: "Contact", icon: "/icons/finder.png" },
   { id: "folder", name: "Documents", icon: "/icons/weather.png" },
@@ -25,6 +26,7 @@ const apps = [
 
 const WINDOW_SIZES: Record<string, { width: number; height: number }> = {
   resume: { width: 660, height: 530 },
+  systemInfo: { width: 700, height: 380 },
 };
 
 export default function MacOSDesktop() {
@@ -82,6 +84,8 @@ export default function MacOSDesktop() {
             }
           />
         );
+      case "systemInfo":
+        return <SystemInfoApp />;
       default:
         return (
           <div className="p-6 h-full flex items-center justify-center">

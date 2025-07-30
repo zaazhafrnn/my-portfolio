@@ -107,6 +107,24 @@ export default function WindowInstances({
                 <ContextMenuShortcut>⌘W</ContextMenuShortcut>
               </ContextMenuItem>
               <ContextMenuSeparator />
+              {window.appId === "systemInfo" && (
+                <>
+                  <ContextMenuItem>
+                    Hire This Guy!
+                    <ContextMenuShortcut>🙇🏽‍♂️</ContextMenuShortcut>
+                  </ContextMenuItem>
+                  <ContextMenuItem asChild>
+                    <a
+                      href="/folder/Resume.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Resume
+                      <ContextMenuShortcut>↗</ContextMenuShortcut>
+                    </a>
+                  </ContextMenuItem>
+                </>
+              )}
               <ContextMenuItem disabled>
                 Back
                 <ContextMenuShortcut>⌘[</ContextMenuShortcut>
@@ -170,6 +188,49 @@ export default function WindowInstances({
                     </ContextMenuSubContent>
                   </ContextMenuSub>
                   <ContextMenuItem disabled>Download Zip</ContextMenuItem>
+                </>
+              )}
+              {window.appId === "systemInfo" && (
+                <>
+                  <ContextMenuSub>
+                    <ContextMenuSubTrigger>
+                      Export file as
+                    </ContextMenuSubTrigger>
+                    <ContextMenuSubContent className="w-42">
+                      <ContextMenuItem asChild className="group">
+                        <a>
+                          No!
+                          <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
+                            👀
+                          </ContextMenuShortcut>
+                        </a>
+                      </ContextMenuItem>
+                      <ContextMenuItem asChild className="group">
+                        <a>
+                          YOU
+                          <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
+                            😤
+                          </ContextMenuShortcut>
+                        </a>
+                      </ContextMenuItem>
+                      <ContextMenuItem asChild className="group">
+                        <a>
+                          CAN
+                          <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
+                            🙅🏽‍♂️
+                          </ContextMenuShortcut>
+                        </a>
+                      </ContextMenuItem>
+                      <ContextMenuItem asChild className="group">
+                        <a>
+                          NOT!!
+                          <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
+                            😈
+                          </ContextMenuShortcut>
+                        </a>
+                      </ContextMenuItem>
+                    </ContextMenuSubContent>
+                  </ContextMenuSub>
                 </>
               )}
               <ContextMenuItem>
