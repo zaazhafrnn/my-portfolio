@@ -162,6 +162,9 @@ export default function MacOSDesktop() {
             openApps={openAppIds}
             bouncingApps={bouncingApps}
             stopBounce={stopBouncing}
+            windows={windows}
+            closeApp={closeWindow}
+            minimizeApp={minimizeWindow}
           />
         </div>
       </div>
