@@ -8,10 +8,7 @@ import dynamic from "next/dynamic";
 import React, { useState } from "react";
 
 const MacOSDock = dynamic(
-  () =>
-    import("@/components/ui/shadcn-io/mac-os-dock").then(
-      (mod) => mod.MacOSDock,
-    ),
+  () => import("@/components/ui/mac-os-dock").then((mod) => mod.MacOSDock),
   { ssr: false },
 );
 

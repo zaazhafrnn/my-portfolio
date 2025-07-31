@@ -1,6 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
 export default function SystemInfoApp() {
   const version = useMemo(() => {
@@ -38,36 +44,122 @@ export default function SystemInfoApp() {
             <h1 className="text-4xl font-medium text-gray-900">
               Achmad Zhafran Alysyam
             </h1>
-            <p className="text-sm">Version {version} Centennials</p>
+            <p className="text-sm">
+              Version{" "}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <span>{version}</span>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="bottom"
+                    className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                  >
+                    day. old.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>{" "}
+              Centennials
+            </p>
           </div>
 
           <div className="space-y-1 text-sm">
-            <InfoRow label="MacBook Pro" value="(M1 Pro, 14-inch); hopefully" />
-            <InfoRow label="Work Experience" value="10+ months" />
-            <InfoRow label="Expertise" value="So Far Mostly in Frontend Development" />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <InfoRow label="MacBook Pro" value="(M1 Pro, 14-inch)" />
+                </TooltipTrigger>
+                <TooltipContent
+                  side="bottom"
+                  className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                >
+                  MAMAA MAU INII!
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <InfoRow label="Work Experience" value="10+ months, more or less" />
+            <InfoRow
+              label="Expertise"
+              value="So Far Most Likely in Frontend Development"
+            />
             <InfoRow
               label="Collage"
               value="Politeknik Perkapalan Negeri Surabaya"
             />
-            <InfoRow label="Field" value="Automation Engineering" />
-            <InfoRow label="Academic Year" value="First Year (2025)" />
+            <InfoRow label="Major" value="Automation Engineering" />
+            <InfoRow label="Cohort" value="2025" />
             <InfoRow label="Location" value="Surabaya, Indonesia" />
             <InfoRow
               label="Contact"
-              value="zaazhafrnn@gmail.com or DM @zaazhafrnn"
+              value={
+                <span>
+                  <span
+                    onClick={() =>
+                      window.open(
+                        `https://mail.google.com/mail/?view=cm&fs=1&to=zaazhafrnn@gmail.com&su=Hai! From your portfolio!`,
+                        "_blank",
+                      )
+                    }
+                    className="select-text cursor-pointer hover:text-blue-500 hover:underline transition-colors"
+                  >
+                    zaazhafrnn@gmail.com
+                  </span>
+                  <span className="select-none"> or DM </span>
+                  <span
+                    onClick={() =>
+                      window.open(
+                        "https://www.instagram.com/zaazhafrnn",
+                        "_blank",
+                      )
+                    }
+                    className="select-text cursor-pointer hover:text-blue-500 hover:underline transition-colors"
+                  >
+                    @zaazhafrnn
+                  </span>
+                </span>
+              }
             />
           </div>
 
           <div className="space-x-4 pt-0">
-            <button
-              className="px-2 h-6 bg-neutral-50 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors border border-gray-300 cursor-pointer"
-              onClick={() => window.open("/folder/Resume.pdf", "_blank")}
-            >
-              View Resume...
-            </button>
-            <button className="px-2 h-6 bg-neutral-50 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors border border-gray-300 cursor-pointer">
-              Simply Lovely...
-            </button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    className="px-2 h-6 bg-neutral-50 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors border border-gray-300 cursor-pointer"
+                    onClick={() => window.open("/folder/Resume.pdf", "_blank")}
+                  >
+                    View Resume...
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="bottom"
+                  className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                >
+                  Open resume in new tab
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    className="px-2 h-6 bg-neutral-50 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors border border-gray-300 cursor-pointer"
+                    onClick={() =>
+                      window.open("https://github.com/zaazhafrnn", "_blank")
+                    }
+                  >
+                    Simply Lovely...
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="bottom"
+                  className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                >
+                  View GitHub profile
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </div>

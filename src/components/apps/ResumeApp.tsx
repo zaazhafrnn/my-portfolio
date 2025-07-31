@@ -8,7 +8,7 @@ import {
 import { Download, Eye, ZoomIn, ZoomOut } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { Spinner } from "../ui/shadcn-io/spinner";
+import { Spinner } from "../ui/spinner";
 
 interface ResumeAppProps {
   className?: string;
@@ -132,19 +132,25 @@ export default function ResumeApp({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <a
-              href={disabled ? undefined : resumePath}
-              onClick={disabled ? (e) => e.preventDefault() : undefined}
-              className={`p-1 rounded bg-gray-200 transition-colors ${
-                disabled
-                  ? "opacity-50 cursor-default pointer-events-none"
-                  : "hover:bg-gray-300 cursor-pointer"
-              }`}
-              download={disabled ? undefined : "Achmad Zhafran's Resume.pdf"}
-              aria-disabled={disabled}
+            <button
+              onClick={async () => {
+                try {
+                  const res = await fetch(resumePath);
+                  const url = URL.createObjectURL(await res.blob());
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = "Resume.pdf";
+                  a.click();
+                  URL.revokeObjectURL(url);
+                } catch {
+                  window.open(resumePath, "_blank");
+                }
+              }}
+              disabled={disabled}
+              className="p-1 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-default transition-colors cursor-pointer disabled:pointer-events-none"
             >
               <Download size={12} />
-            </a>
+            </button>
           </TooltipTrigger>
           <TooltipContent
             side="bottom"

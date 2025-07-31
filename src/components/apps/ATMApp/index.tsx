@@ -45,14 +45,17 @@ export default function ATMApp() {
       )}
 
       <div className="bg-[#ddd] text-gray-700 px-4 py-1 border-b border-gray-300 flex justify-between text-xs italic">
-        <a
-          href="https://github.com/your-username/my-portfolio"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline"
-        >
-          Open in GitHub ↗
-        </a>
+        <span>
+          Written in Java/MySql –{" "}
+          <span
+            onClick={() =>
+              window.open("https://github.com/zaazhafrnn/ATM-System", "_blank")
+            }
+            className="hover:underline"
+          >
+            Open in GitHub ↗
+          </span>
+        </span>
         <p>*This is only a static preview of the project</p>
       </div>
     </div>

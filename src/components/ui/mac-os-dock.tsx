@@ -353,7 +353,7 @@ const MacOSDock: React.FC<MacOSDockProps> = ({
                   {app.name}
                 </ContextMenuLabel>
                 <ContextMenuSeparator />
-                
+
                 <ContextMenuItem
                   onSelect={() => {
                     onAppClick(app.id);

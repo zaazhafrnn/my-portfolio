@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Spinner } from "../ui/shadcn-io/spinner";
+import { Spinner } from "../ui/spinner";
 
 export default function PhotosApp() {
   const [rotation, setRotation] = useState(-22.5);

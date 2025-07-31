@@ -12,7 +12,7 @@ import {
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { Spinner } from "@/components/ui/shadcn-io/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { Download } from "lucide-react";
 import { Suspense } from "react";
 
@@ -29,37 +29,37 @@ export default function WindowInstances({
 }: any) {
   return (
     <>
-      {windows.map((window: any) =>
-        !window.isMinimized ? (
+      {windows.map((win: any) =>
+        !win.isMinimized ? (
           <ContextMenu
-            key={window.id}
+            key={win.id}
             onOpenChange={(open) => {
-              if (open) stopBouncing(window.appId);
+              if (open) stopBouncing(win.appId);
             }}
           >
             <ContextMenuTrigger>
               <Window
-                id={window.id}
-                title={window.title}
-                position={window.position}
-                zIndex={window.zIndex}
+                id={win.id}
+                title={win.title}
+                position={win.position}
+                zIndex={win.zIndex}
                 onClose={closeWindow}
                 onMinimize={() => {
-                  minimizeWindow(window.id);
-                  stopBouncing(window.appId);
+                  minimizeWindow(win.id);
+                  stopBouncing(win.appId);
                 }}
                 onMouseDown={(e) => {
-                  handleMouseDown(e, window.id);
-                  stopBouncing(window.appId);
+                  handleMouseDown(e, win.id);
+                  stopBouncing(win.appId);
                 }}
                 onBringToFront={() => {
-                  bringToFront(window.id);
-                  stopBouncing(window.appId);
+                  bringToFront(win.id);
+                  stopBouncing(win.appId);
                 }}
-                customToolbarLeft={windowToolbarContent[window.id]?.left}
-                customToolbarRight={windowToolbarContent[window.id]?.right}
-                width={WINDOW_SIZES[window.appId]?.width}
-                height={WINDOW_SIZES[window.appId]?.height}
+                customToolbarLeft={windowToolbarContent[win.id]?.left}
+                customToolbarRight={windowToolbarContent[win.id]?.right}
+                width={WINDOW_SIZES[win.appId]?.width}
+                height={WINDOW_SIZES[win.appId]?.height}
               >
                 <Suspense
                   fallback={
@@ -70,27 +70,27 @@ export default function WindowInstances({
                     </div>
                   }
                 >
-                  {getWindowContent(window.appId, window.id)}
+                  {getWindowContent(win.appId, win.id)}
                 </Suspense>
               </Window>
             </ContextMenuTrigger>
             <ContextMenuContent className="w-44">
               <ContextMenuLabel className="text-xs text-center -mt-1 h-6 text-muted-foreground">
-                {window.title}
+                {win.title}
               </ContextMenuLabel>
               <ContextMenuSeparator />
               <ContextMenuItem
                 onSelect={() => {
-                  bringToFront(window.id);
-                  stopBouncing(window.appId);
+                  bringToFront(win.id);
+                  stopBouncing(win.appId);
                 }}
               >
                 Bring to Front
               </ContextMenuItem>
               <ContextMenuItem
                 onSelect={() => {
-                  minimizeWindow(window.id);
-                  stopBouncing(window.appId);
+                  minimizeWindow(win.id);
+                  stopBouncing(win.appId);
                 }}
               >
                 Minimize Window
@@ -98,8 +98,8 @@ export default function WindowInstances({
               </ContextMenuItem>
               <ContextMenuItem
                 onSelect={() => {
-                  closeWindow(window.id);
-                  stopBouncing(window.appId);
+                  closeWindow(win.id);
+                  stopBouncing(win.appId);
                 }}
                 className="text-red-600"
               >
@@ -107,35 +107,54 @@ export default function WindowInstances({
                 <ContextMenuShortcut>⌘W</ContextMenuShortcut>
               </ContextMenuItem>
               <ContextMenuSeparator />
-              {window.appId === "systemInfo" && (
+              {win.appId === "systemInfo" && (
                 <>
-                  <ContextMenuItem>
-                    Hire This Guy!
-                    <ContextMenuShortcut>🙇🏽‍♂️</ContextMenuShortcut>
+                  <ContextMenuItem asChild>
+                    <span
+                      onClick={() =>
+                        window.open("https://github.com/zaazhafrnn", "_blank")
+                      }
+                    >
+                      Open GitHub
+                      <ContextMenuShortcut>↗</ContextMenuShortcut>
+                    </span>
                   </ContextMenuItem>
                   <ContextMenuItem asChild>
-                    <a
-                      href="/folder/Resume.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <span
+                      onClick={() =>
+                        window.open(
+                          `https://mail.google.com/mail/?view=cm&fs=1&to=zaazhafrnn@gmail.com&su=Hai! I'm interested to hire you!"`,
+                          "_blank",
+                        )
+                      }
+                    >
+                      Hire This Guy!
+                      <ContextMenuShortcut>🙇🏽‍♂️</ContextMenuShortcut>
+                    </span>
+                  </ContextMenuItem>
+                  <ContextMenuItem asChild>
+                    <span
+                      onClick={() =>
+                        window.open("/folder/Resume.pdf", "_blank")
+                      }
                     >
                       View Resume
                       <ContextMenuShortcut>↗</ContextMenuShortcut>
-                    </a>
+                    </span>
                   </ContextMenuItem>
                 </>
               )}
-              {window.appId === "resume" && (
+              {win.appId === "resume" && (
                 <>
                   <ContextMenuItem asChild>
-                    <a
-                      href="/folder/Resume.pdf"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <span
+                      onClick={() =>
+                        window.open("/folder/Resume.pdf", "_blank")
+                      }
                     >
                       Open in New Tab
                       <ContextMenuShortcut>↗</ContextMenuShortcut>
-                    </a>
+                    </span>
                   </ContextMenuItem>
                 </>
               )}
@@ -143,7 +162,7 @@ export default function WindowInstances({
                 Back
                 <ContextMenuShortcut>⌘[</ContextMenuShortcut>
               </ContextMenuItem>
-              {window.appId === "resume" && (
+              {win.appId === "resume" && (
                 <>
                   <ContextMenuSub>
                     <ContextMenuSubTrigger>
@@ -151,34 +170,44 @@ export default function WindowInstances({
                     </ContextMenuSubTrigger>
                     <ContextMenuSubContent className="w-42">
                       <ContextMenuItem asChild className="group">
-                        <a
-                          href="/folder/Resume.pdf"
-                          download="Achmad Zhafran's Resume.pdf"
-                          className="flex w-full items-center justify-between"
+                        <span
+                          onClick={() => {
+                            const link = document.createElement("a");
+                            link.href = "/folder/Resume.pdf";
+                            link.download = "Achmad Zhafran's Resume.pdf";
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          }}
                         >
                           Download as PDF
                           <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
                             <Download />
                           </ContextMenuShortcut>
-                        </a>
+                        </span>
                       </ContextMenuItem>
                       <ContextMenuItem asChild className="group">
-                        <a
-                          href="/folder/resume@3x.jpg"
-                          download="Achmad Zhafran's Resume.jpg"
-                          className="flex w-full items-center justify-between"
+                        <span
+                          onClick={() => {
+                            const link = document.createElement("a");
+                            link.href = "/folder/resume@3x.jpg";
+                            link.download = "Achmad Zhafran's Resume.jpg";
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                          }}
                         >
                           Download as JPG
                           <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
                             <Download />
                           </ContextMenuShortcut>
-                        </a>
+                        </span>
                       </ContextMenuItem>
                     </ContextMenuSubContent>
                   </ContextMenuSub>
                 </>
               )}
-              {window.appId === "photos" && (
+              {win.appId === "photos" && (
                 <>
                   <ContextMenuSub>
                     <ContextMenuSubTrigger>Send To</ContextMenuSubTrigger>
@@ -194,18 +223,18 @@ export default function WindowInstances({
                   <ContextMenuItem disabled>Download Zip</ContextMenuItem>
                 </>
               )}
-              {window.appId === "systemInfo" && (
+              {win.appId === "systemInfo" && (
                 <>
                   <ContextMenuSub>
                     <ContextMenuSubTrigger>
-                      Get Template Website
+                      Get Website Template
                     </ContextMenuSubTrigger>
                     <ContextMenuSubContent className="w-42">
                       <ContextMenuItem asChild className="group">
                         <a>
                           No!
                           <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
-                            👀
+                            🙅🏽‍♂️
                           </ContextMenuShortcut>
                         </a>
                       </ContextMenuItem>
@@ -229,7 +258,7 @@ export default function WindowInstances({
                         <a>
                           NOT!!
                           <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
-                            🙅🏽‍♂️
+                            💀💀💀
                           </ContextMenuShortcut>
                         </a>
                       </ContextMenuItem>

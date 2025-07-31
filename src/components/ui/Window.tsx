@@ -1,13 +1,13 @@
 "use client";
-import React, { FC } from "react";
-import { Position } from "@/types";
-import { X, Minus } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Position } from "@/types";
+import { Minus, X } from "lucide-react";
+import React, { FC } from "react";
 
 interface WindowProps {
   id: number;
@@ -61,7 +61,7 @@ const Window: FC<WindowProps> = ({
       onClick={() => onBringToFront(id)}
     >
       <div
-        className="h-8 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-3 cursor-move"
+        className="h-8 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-3 cursor-grabbing"
         onMouseDown={(e) => onMouseDown(e, id)}
       >
         <div className="flex items-center gap-2">
