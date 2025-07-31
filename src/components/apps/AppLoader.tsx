@@ -1,5 +1,6 @@
 "use client";
 import { FC } from "react";
+import ATMApp from "./ATMApp";
 import PhotosApp from "./PhotosApp";
 import ResumeApp from "./ResumeApp";
 import SystemInfoApp from "./SystemInfoApp";
@@ -7,6 +8,7 @@ import SystemInfoApp from "./SystemInfoApp";
 const AppComponents = {
   photos: PhotosApp,
   resume: ResumeApp,
+  atmProject: ATMApp,
   systemInfo: SystemInfoApp,
 };
 
@@ -16,7 +18,7 @@ interface AppLoaderProps {
 
 const AppLoader: FC<AppLoaderProps> = ({ appId }) => {
   const AppComponent = AppComponents[appId];
-  
+
   if (!AppComponent) {
     return (
       <div className="p-6 h-full flex items-center justify-center">
@@ -24,7 +26,7 @@ const AppLoader: FC<AppLoaderProps> = ({ appId }) => {
       </div>
     );
   }
-  
+
   return <AppComponent />;
 };
 

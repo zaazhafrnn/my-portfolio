@@ -1,5 +1,5 @@
 "use client";
-import { PhotosApp, ResumeApp, SystemInfoApp } from "@/components/apps";
+import { ATMApp, PhotosApp, ResumeApp, SystemInfoApp } from "@/components/apps";
 import DesktopBackground from "@/components/mac/DesktopBackground";
 import TopBar from "@/components/mac/TopBar";
 import WindowInstances from "@/components/mac/WindowInstances";
@@ -20,13 +20,19 @@ const apps = [
   { id: "photos", name: "Photo Dumps", icon: "/icons/photos.png" },
   { id: "resume", name: "Resume.pdf", icon: "/icons/file.png" },
   { id: "systemInfo", name: "System Information", icon: "/icons/settings.png" },
-  { id: "portfolioATM", name: "Portfolio (ATM Simulator)", icon: "/icons/folder.png" },
+  {
+    id: "atmProject",
+    name: "Portfolio (ATM Simulator)",
+    icon: "/icons/folder.png",
+  },
   { id: "folder", name: "Documents", icon: "/icons/weather.png" },
 ];
 
 const WINDOW_SIZES: Record<string, { width: number; height: number }> = {
+  // default = { width: 600, height: 400 };
   resume: { width: 660, height: 530 },
   systemInfo: { width: 650, height: 375 },
+  atmProject: { width: 600, height: 500 },
 };
 
 export default function MacOSDesktop() {
@@ -86,6 +92,8 @@ export default function MacOSDesktop() {
         );
       case "systemInfo":
         return <SystemInfoApp />;
+      case "atmProject":
+        return <ATMApp />;
       default:
         return (
           <div className="p-6 h-full flex items-center justify-center">
