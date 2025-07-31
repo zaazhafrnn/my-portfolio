@@ -44,6 +44,7 @@ export default function SystemInfoApp() {
           <div className="space-y-1 text-sm">
             <InfoRow label="MacBook Pro" value="(M1 Pro, 14-inch); hopefully" />
             <InfoRow label="Work Experience" value="10+ months" />
+            <InfoRow label="Expertise" value="So Far Mostly in Frontend Development" />
             <InfoRow
               label="Collage"
               value="Politeknik Perkapalan Negeri Surabaya"

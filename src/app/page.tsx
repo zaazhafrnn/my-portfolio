@@ -20,13 +20,13 @@ const apps = [
   { id: "photos", name: "Photo Dumps", icon: "/icons/photos.png" },
   { id: "resume", name: "Resume.pdf", icon: "/icons/file.png" },
   { id: "systemInfo", name: "System Information", icon: "/icons/settings.png" },
-  { id: "portfolio", name: "Portfolio", icon: "/icons/notes.png" },
+  { id: "portfolioATM", name: "Portfolio (ATM Simulator)", icon: "/icons/folder.png" },
   { id: "folder", name: "Documents", icon: "/icons/weather.png" },
 ];
 
 const WINDOW_SIZES: Record<string, { width: number; height: number }> = {
   resume: { width: 660, height: 530 },
-  systemInfo: { width: 700, height: 370 },
+  systemInfo: { width: 650, height: 375 },
 };
 
 export default function MacOSDesktop() {

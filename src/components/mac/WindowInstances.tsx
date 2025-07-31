@@ -125,10 +125,6 @@ export default function WindowInstances({
                   </ContextMenuItem>
                 </>
               )}
-              <ContextMenuItem disabled>
-                Back
-                <ContextMenuShortcut>⌘[</ContextMenuShortcut>
-              </ContextMenuItem>
               {window.appId === "resume" && (
                 <>
                   <ContextMenuItem asChild>
@@ -141,6 +137,14 @@ export default function WindowInstances({
                       <ContextMenuShortcut>↗</ContextMenuShortcut>
                     </a>
                   </ContextMenuItem>
+                </>
+              )}
+              <ContextMenuItem disabled>
+                Back
+                <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+              </ContextMenuItem>
+              {window.appId === "resume" && (
+                <>
                   <ContextMenuSub>
                     <ContextMenuSubTrigger>
                       Export file as
@@ -194,7 +198,7 @@ export default function WindowInstances({
                 <>
                   <ContextMenuSub>
                     <ContextMenuSubTrigger>
-                      Export file as
+                      Get Template Website
                     </ContextMenuSubTrigger>
                     <ContextMenuSubContent className="w-42">
                       <ContextMenuItem asChild className="group">
@@ -217,7 +221,7 @@ export default function WindowInstances({
                         <a>
                           CAN
                           <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
-                            🙅🏽‍♂️
+                            😈
                           </ContextMenuShortcut>
                         </a>
                       </ContextMenuItem>
@@ -225,7 +229,7 @@ export default function WindowInstances({
                         <a>
                           NOT!!
                           <ContextMenuShortcut className="opacity-0 group-hover:opacity-100 transition-opacity">
-                            😈
+                            🙅🏽‍♂️
                           </ContextMenuShortcut>
                         </a>
                       </ContextMenuItem>
