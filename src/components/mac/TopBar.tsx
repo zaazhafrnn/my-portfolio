@@ -3,15 +3,17 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function TopBar() {
-  const [now, setNow] = useState(new Date());
+  const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(new Date());
-    }, 1000);
+    const updateNow = () => setNow(new Date());
+    updateNow();
 
+    const interval = setInterval(updateNow, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  if (!now) return null;
 
   const dateStr = now
     .toLocaleDateString("en-US", {
