@@ -13,14 +13,22 @@ export default function SystemInfoApp() {
     const birthDate = new Date(2007, 5, 18);
     const today = new Date();
 
-    const year = today.getFullYear() - birthDate.getFullYear();
-    const month = today.getMonth() - birthDate.getMonth();
-    const day = today.getDate() - birthDate.getDate();
+    let years = today.getFullYear() - birthDate.getFullYear();
+    let months = today.getMonth() - birthDate.getMonth();
+    let days = today.getDate() - birthDate.getDate();
 
-    const calcMonth = month < 0 ? 12 + month : month;
-    const calcDay = day < 0 ? 30 + day : day;
+    if (days < 0) {
+      months -= 1;
+      const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+      days += previousMonth.getDate();
+    }
 
-    return `${year}.${String(calcMonth).padStart(2, "0")}.${String(calcDay).padStart(2, "0")}`;
+    if (months < 0) {
+      years -= 1;
+      months += 12;
+    }
+
+    return `${years}.${months}.${days}`;
   }, []);
 
   return (
@@ -77,7 +85,7 @@ export default function SystemInfoApp() {
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <InfoRow label="Work Experience" value="10+ months, more or less" />
+            <InfoRow label="Work Experience" value="10+ months – more or less" />
             <InfoRow
               label="Expertise"
               value="So Far Most Likely in Frontend Development"
