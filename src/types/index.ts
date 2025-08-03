@@ -26,3 +26,12 @@ export interface DragState {
 }
 
 export type MouseEventHandler = (e: MouseEvent<Element>, id: number) => void;
+
+export type ScreenType =
+  | "login"
+  | "home"
+  | "balance"
+  | "mutation"
+  | "transfer"
+  | "withdraw"
+  | "deposit";

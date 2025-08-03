@@ -107,6 +107,20 @@ export default function WindowInstances({
                 <ContextMenuShortcut>⌘W</ContextMenuShortcut>
               </ContextMenuItem>
               <ContextMenuSeparator />
+              {win.appId === "atmProject" && (
+                <>
+                  <ContextMenuItem asChild>
+                    <span
+                      onClick={() =>
+                        window.open("https://github.com/zaazhafrnn/ATM-System", "_blank")
+                      }
+                    >
+                      View in GitHub
+                      <ContextMenuShortcut>↗</ContextMenuShortcut>
+                    </span>
+                  </ContextMenuItem>
+                </>
+              )}
               {win.appId === "systemInfo" && (
                 <>
                   <ContextMenuItem asChild>
