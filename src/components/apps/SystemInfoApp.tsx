@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
+} from "@/components/ui/tooltip";
 
 export default function SystemInfoApp() {
   const version = useMemo(() => {
@@ -78,10 +78,10 @@ export default function SystemInfoApp() {
                   <InfoRow label="MacBook Pro" value="(M1 Pro, 14-inch)" />
                 </TooltipTrigger>
                 <TooltipContent
-                  side="bottom"
+                  side="right"
                   className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
                 >
-                  MAMAA MAU INII!
+                  MAMAA MAU INII! 🥺
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

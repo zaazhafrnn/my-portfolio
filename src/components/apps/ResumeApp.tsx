@@ -8,7 +8,7 @@ import {
 import { Download, Eye, ZoomIn, ZoomOut } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { Spinner } from "../ui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 
 interface ResumeAppProps {
   className?: string;
@@ -24,12 +24,10 @@ export default function ResumeApp({
   const [zoom, setZoom] = useState(100);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [fileSize, setFileSize] = useState<string>("");
   const [lastModified, setLastModified] = useState<string>("");
-  const [pdfUrl, setPdfUrl] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const resumePath = "/folder/Resume.pdf";
+  const resumePath = "/folder/Resums.pdf";
   const disabled = !!error || isLoading;
 
   const handleZoomIn = () => {
@@ -180,15 +178,6 @@ export default function ResumeApp({
       try {
         const response = await fetch(resumePath, { method: "HEAD" });
         if (response.ok) {
-          setPdfUrl(resumePath);
-
-          const contentLength = response.headers.get("content-length");
-          if (contentLength) {
-            const sizeInBytes = parseInt(contentLength);
-            const sizeInMB = (sizeInBytes / (1024 * 1024)).toFixed(1);
-            setFileSize(`${sizeInMB} MB`);
-          }
-
           const lastMod = response.headers.get("last-modified");
           if (lastMod) {
             const date = new Date(lastMod);

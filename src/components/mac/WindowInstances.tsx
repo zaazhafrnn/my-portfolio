@@ -128,7 +128,7 @@ export default function WindowInstances({
                         )
                       }
                     >
-                      Hire This Guy!
+                      Recruit This Guy!
                       <ContextMenuShortcut>🙇🏽‍♂️</ContextMenuShortcut>
                     </span>
                   </ContextMenuItem>

@@ -1,6 +1,6 @@
 "use client";
 import { FC, Suspense, lazy } from "react";
-import { Spinner } from "../ui/shadcn-io/spinner";
+import { Spinner } from "@/components/ui/spinner";
 
 const AppComponents = {
   atmProject: lazy(() => import("./ATMApp")),
