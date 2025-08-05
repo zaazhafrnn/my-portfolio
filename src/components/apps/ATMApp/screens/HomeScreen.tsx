@@ -16,7 +16,7 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
     { label: "MINI", sub: "STATEMENT", number: 5, action: "mutation" },
     {
       label: "EXIT",
-      sub: "END SESSION",
+      sub: "Leave",
       number: 6,
       action: "login",
       color: "red",
@@ -30,30 +30,30 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
         <div className="text-yellow-300 text-xs">Select Transaction</div>
       </div>
 
-      <div className="flex-1 flex justify-between px-3 py-2">
-        <div className="flex flex-col justify-between w-24">
+      <div className="flex-1 flex justify-between items-stretch">
+        <div className="flex flex-col justify-evenly text-left">
           {leftButtons.map((btn) => (
-            <button
-              key={btn.number}
-              onClick={() => onNavigate(btn.action as ScreenType)}
-              className="bg-gray-700 hover:bg-gray-600 p-2 rounded-l-lg text-left border-r-4 border-green-500 relative"
-            >
-              <div className="font-bold text-xs">{btn.label}</div>
-              <div className="text-xs text-gray-300">{btn.sub}</div>
-              <div className="absolute -left-6 top-1/2 transform -translate-y-1/2 text-green-400">
-                👈 <span className="text-xs ml-1">{btn.number}</span>
-              </div>
-            </button>
+            <div key={btn.number} className="flex items-center space-x-2">
+              <button
+                onClick={() => onNavigate(btn.action as ScreenType)}
+                className="flex p-2 rounded-md border border-green-500"
+              >
+                <div className="flex items-center pr-4">{`<<<`}</div>
+                <div>
+                  <div className="font-bold text-xs">{btn.label}</div>
+                  <div className="text-xs text-gray-300">{btn.sub}</div>
+                </div>
+              </button>
+            </div>
           ))}
         </div>
 
-        <div className="flex-1 flex items-center justify-center mx-3">
+        <div className="flex-1 flex items-center justify-center px-6">
           <div className="text-center">
             <div className="text-4xl mb-2">🏦</div>
             <p className="text-sm text-gray-300 mb-2">Choose a service</p>
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-gray-400 mb-2">
               <p>Account: **** **** **** 1234</p>
-              <p>Available Balance: Rp 2,500,000</p>
             </div>
             <div className="mt-3 text-xs text-yellow-300">
               Touch screen OR use physical buttons
@@ -61,27 +61,27 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between w-24">
+        <div className="flex flex-col justify-evenly text-right">
           {rightButtons.map((btn) => (
-            <button
+            <div
               key={btn.number}
-              onClick={() => onNavigate(btn.action as ScreenType)}
-              className={`${
-                btn.color === "red"
-                  ? "bg-red-700 hover:bg-red-600 border-l-4 border-red-400"
-                  : "bg-gray-700 hover:bg-gray-600 border-l-4 border-green-500"
-              } p-2 rounded-r-lg text-right relative`}
+              className="flex items-center space-x-2 justify-end"
             >
-              <div className="font-bold text-xs">{btn.label}</div>
-              <div className="text-xs text-gray-300">{btn.sub}</div>
-              <div
-                className={`absolute -right-6 top-1/2 transform -translate-y-1/2 ${
-                  btn.color === "red" ? "text-red-400" : "text-green-400"
-                }`}
+              <button
+                onClick={() => onNavigate(btn.action as ScreenType)}
+                className={`flex ${
+                  btn.color === "red"
+                    ? "border border-red-400"
+                    : "border border-green-500"
+                } p-2 rounded-md`}
               >
-                👉 <span className="text-xs mr-1">{btn.number}</span>
-              </div>
-            </button>
+                <div>
+                  <div className="font-bold text-xs">{btn.label}</div>
+                  <div className="text-xs text-gray-300">{btn.sub}</div>
+                </div>
+                <div className="flex items-center pl-4">{`>>>`}</div>
+              </button>
+            </div>
           ))}
         </div>
       </div>
