@@ -4,6 +4,7 @@ interface ATMButtonPanelProps {
   side: "left" | "right";
   screen: ScreenType;
   onNavigate: (screen: ScreenType) => void;
+  transferStep?: string | null; // NEW
 }
 
 type ButtonConfig = {
@@ -35,11 +36,11 @@ const buttonMap: Record<
     ],
   },
   balance: {
-    left: [{ label: "1", screen: "home" }, {}, {}, {}],
+    left: [{}, {}, {}, {}],
     right: [{}, {}, { label: "6", screen: "home" }, {}],
   },
   mutation: {
-    left: [{ label: "1", screen: "home" }, {}, {}, {}],
+    left: [{}, {}, {}, {}],
     right: [{}, {}, { label: "6", screen: "home" }, {}],
   },
   withdraw: {
@@ -56,26 +57,12 @@ const buttonMap: Record<
       {},
     ],
   },
-  transfer: {
-    left: [
-      { label: "1", clickTargetId: "transfer-option-1" },
-      { label: "2", clickTargetId: "transfer-option-2" },
-      {},
-      {},
-    ],
-    right: [
-      { label: "4", clickTargetId: "transfer-option-3" },
-      {},
-      { label: "6", screen: "home" },
-      {},
-    ],
-  },
   deposit: {
     left: [
-      { label: "1", clickTargetId: "deposit-100000" },
-      { label: "2", clickTargetId: "deposit-250000" },
       {},
-      {},
+      { label: "1", clickTargetId: "deposit-50000" },
+      { label: "2", clickTargetId: "deposit-100000" },
+      { label: "3", clickTargetId: "deposit-250000" },
     ],
     right: [
       { label: "4", clickTargetId: "deposit-500000" },
@@ -84,14 +71,59 @@ const buttonMap: Record<
       {},
     ],
   },
+  transfer: { left: [], right: [] }, // handled dynamically
+};
+
+// NEW – dynamic buttons based on transfer step
+const getTransferButtonMap = (
+  side: "left" | "right",
+  step: string | null,
+): ButtonConfig[] => {
+  if (step === "type" || !step) {
+    return side === "left"
+      ? [
+          { label: "1", clickTargetId: "transfer-type-1" },
+          { label: "2", clickTargetId: "transfer-type-2" },
+          { label: "3", clickTargetId: "transfer-type-3" },
+          {},
+        ]
+      : [
+          { label: "4", clickTargetId: "transfer-type-4" },
+          { label: "5", clickTargetId: "transfer-type-5" },
+          { label: "6", clickTargetId: "transfer-cancel" },
+          {},
+        ];
+  }
+
+  if (step === "amount") {
+    return side === "left"
+      ? [
+          { label: "1", clickTargetId: "transfer-amount-1" },
+          { label: "2", clickTargetId: "transfer-amount-2" },
+          { label: "3", clickTargetId: "transfer-amount-3" },
+          {},
+        ]
+      : [
+          { label: "4", clickTargetId: "transfer-amount-4" },
+          { label: "5", clickTargetId: "transfer-amount-5" },
+          { label: "6", clickTargetId: "transfer-cancel" },
+          {},
+        ];
+  }
+
+  return Array(4).fill({});
 };
 
 export default function ATMButtonPanel({
   side,
   screen,
   onNavigate,
+  transferStep,
 }: ATMButtonPanelProps) {
-  const buttons = buttonMap[screen]?.[side] ?? [];
+  const buttons =
+    screen === "transfer"
+      ? getTransferButtonMap(side, transferStep as string)
+      : (buttonMap[screen]?.[side] ?? []);
 
   const handleClick = (config: ButtonConfig) => {
     if (config.clickTargetId) {
@@ -123,11 +155,7 @@ export default function ATMButtonPanel({
             onClick={() => handleClick(btn)}
             disabled={!btn.label}
             className="bg-gray-600 w-12 h-16 rounded-sm border border-gray-500 shadow-inner opacity-100 active:shadow-inner transition-all"
-          >
-            {btn.label && (
-              <span className="text-white text-xs font-bold">{btn.label}</span>
-            )}
-          </button>
+          />
         ))}
     </div>
   );

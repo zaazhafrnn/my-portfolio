@@ -10,103 +10,60 @@ export default function BalanceScreen({ onBack }: BalanceScreenProps) {
         <div className="text-yellow-300 text-xs">Account Information</div>
       </div>
 
-      <div className="flex-1 flex justify-between px-3 py-2">
-        {/* LEFT BUTTONS */}
-        <div className="flex flex-col justify-between w-24 space-y-4">
-          {/* Button: MAIN MENU */}
-          <button
-            onClick={onBack}
-            className="bg-gray-700 hover:bg-gray-600 p-2 rounded-l-lg text-left border-r-4 border-green-500 transition-colors relative"
-          >
-            <div className="font-bold text-xs">MAIN</div>
-            <div className="text-xs text-gray-300">MENU</div>
-            <div className="absolute -left-10 top-1/2 transform -translate-y-1/2 text-green-400 font-mono text-sm">
-              {`<<<`} <span className="ml-1">1</span>
-            </div>
-          </button>
+      <div className="flex-1 flex justify-between items-stretch">
+        <div className="flex flex-col justify-evenly text-left w-24" />
 
-          {/* Disabled Button: PRINT RECEIPT */}
-          <div className="bg-gray-800 p-2 rounded-l-lg text-left border-r-4 border-gray-600 opacity-50 relative">
-            <div className="font-bold text-xs">PRINT</div>
-            <div className="text-xs text-gray-400">RECEIPT</div>
-            <div className="absolute -left-10 top-1/2 transform -translate-y-1/2 text-gray-500 font-mono text-sm">
-              {`<<<`} <span className="ml-1">2</span>
-            </div>
-          </div>
-
-          {/* Disabled Button: ANOTHER INQUIRY */}
-          <div className="bg-gray-800 p-2 rounded-l-lg text-left border-r-4 border-gray-600 opacity-50 relative">
-            <div className="font-bold text-xs">ANOTHER</div>
-            <div className="text-xs text-gray-400">INQUIRY</div>
-            <div className="absolute -left-10 top-1/2 transform -translate-y-1/2 text-gray-500 font-mono text-sm">
-              {`<<<`} <span className="ml-1">3</span>
-            </div>
-          </div>
-        </div>
-
-        {/* CENTER CONTENT */}
-        <div className="flex-1 flex items-center justify-center mx-3">
-          <div className="bg-white text-black p-4 rounded-lg w-full max-w-56 text-center">
+        <div className="flex-1 flex items-center justify-center px-6">
+          <div className="bg-white text-black p-4 rounded-lg w-full max-w-xs text-center">
             <h3 className="text-sm font-bold mb-2">ACCOUNT BALANCE</h3>
 
             <div className="border-b border-dashed border-gray-400 pb-2 mb-2">
-              <p className="text-xs">Account Number:</p>
+              <p className="text-xs text-gray-600">Account Number:</p>
               <p className="font-mono text-xs">**** **** **** 1234</p>
             </div>
 
             <div className="border-b border-dashed border-gray-400 pb-2 mb-2">
-              <p className="text-xs">Account Holder:</p>
+              <p className="text-xs text-gray-600">Account Holder:</p>
               <p className="font-bold text-xs">JOHN DOE</p>
             </div>
 
             <div className="border-b border-dashed border-gray-400 pb-2 mb-2">
-              <p className="text-xs">Available Balance:</p>
+              <p className="text-xs text-gray-600">Available Balance:</p>
               <p className="text-base font-bold text-green-600">Rp 2,500,000</p>
             </div>
 
             <div className="text-xs text-gray-600">
               <p>Date: {new Date().toLocaleDateString()}</p>
-              <p>Time: {new Date().toLocaleTimeString()}</p>
+              <p>
+                Time:{" "}
+                {new Date().toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })}
+              </p>
             </div>
           </div>
         </div>
 
-        {/* RIGHT BUTTONS */}
-        <div className="flex flex-col justify-between w-24 space-y-4">
-          {/* Disabled Button: ACCOUNT DETAILS */}
-          <div className="bg-gray-800 p-2 rounded-r-lg text-right border-l-4 border-gray-600 opacity-50 relative">
-            <div className="font-bold text-xs">ACCOUNT</div>
-            <div className="text-xs text-gray-400">DETAILS</div>
-            <div className="absolute -right-10 top-1/2 transform -translate-y-1/2 text-gray-500 font-mono text-sm">
-              <span className="mr-1">4</span> {`>>>`}
-            </div>
+        <div className="flex flex-col justify-end text-right mb-8">
+          <div className="flex items-center space-x-2 justify-end">
+            <button
+              onClick={onBack}
+              className="flex p-2 rounded-md border border-red-400"
+            >
+              <div>
+                <div className="font-bold text-xs">CANCEL</div>
+                <div className="text-xs text-gray-300">EXIT</div>
+              </div>
+              <div className="flex items-center pl-4">{`>>>`}</div>
+            </button>
           </div>
-
-          {/* Disabled Button: SAVINGS ACCOUNT */}
-          <div className="bg-gray-800 p-2 rounded-r-lg text-right border-l-4 border-gray-600 opacity-50 relative">
-            <div className="font-bold text-xs">SAVINGS</div>
-            <div className="text-xs text-gray-400">ACCOUNT</div>
-            <div className="absolute -right-10 top-1/2 transform -translate-y-1/2 text-gray-500 font-mono text-sm">
-              <span className="mr-1">5</span> {`>>>`}
-            </div>
-          </div>
-
-          {/* Button: CANCEL */}
-          <button
-            onClick={onBack}
-            className="bg-red-700 hover:bg-red-600 p-2 rounded-r-lg text-right border-l-4 border-red-400 transition-colors relative"
-          >
-            <div className="font-bold text-xs">CANCEL</div>
-            <div className="text-xs text-gray-300">EXIT</div>
-            <div className="absolute -right-10 top-1/2 transform -translate-y-1/2 text-red-400 font-mono text-sm">
-              <span className="mr-1">6</span> {`>>>`}
-            </div>
-          </button>
         </div>
       </div>
 
       <div className="text-center py-2 text-xs text-gray-400">
-        <p>Use touchscreen or side buttons for navigation</p>
+        Use touchscreen or side buttons for navigation
       </div>
     </div>
   );

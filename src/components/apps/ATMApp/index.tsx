@@ -14,6 +14,7 @@ import WithdrawScreen from "./screens/WithdrawScreen";
 export default function ATMApp() {
   const [screen, setScreen] = useState<ScreenType>("login");
   const [time, setTime] = useState("");
+  const [transferStep, setTransferStep] = useState<string | null>(null); // NEW
 
   useEffect(() => {
     const update = () =>
@@ -29,7 +30,12 @@ export default function ATMApp() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleNavigate = (target: ScreenType) => setScreen(target);
+  const handleNavigate = (target: ScreenType) => {
+    setScreen(target);
+    if (target !== "transfer") {
+      setTransferStep(null); // reset step when leaving transfer screen
+    }
+  };
 
   const renderScreen = () => {
     switch (screen) {
@@ -42,7 +48,12 @@ export default function ATMApp() {
       case "mutation":
         return <StatementScreen onBack={() => handleNavigate("home")} />;
       case "transfer":
-        return <TransferScreen onBack={() => handleNavigate("home")} />;
+        return (
+          <TransferScreen
+            onBack={() => handleNavigate("home")}
+            setStep={setTransferStep} // NEW
+          />
+        );
       case "withdraw":
         return <WithdrawScreen onBack={() => handleNavigate("home")} />;
       case "deposit":
@@ -66,6 +77,7 @@ export default function ATMApp() {
           side="left"
           screen={screen}
           onNavigate={handleNavigate}
+          transferStep={transferStep} // NEW
         />
         <div className="flex-1 bg-black border-4 border-gray-900 rounded-lg shadow-inner">
           <div className="bg-[#1a365d] h-full rounded-md overflow-hidden">
@@ -76,6 +88,7 @@ export default function ATMApp() {
           side="right"
           screen={screen}
           onNavigate={handleNavigate}
+          transferStep={transferStep} // NEW
         />
       </div>
 
