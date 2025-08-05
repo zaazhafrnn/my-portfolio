@@ -27,7 +27,7 @@ export default function ResumeApp({
   const [lastModified, setLastModified] = useState<string>("");
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const resumePath = "/folder/Resums.pdf";
+  const resumePath = "/folder/Resume.pdf";
   const disabled = !!error || isLoading;
 
   const handleZoomIn = () => {
@@ -57,7 +57,7 @@ export default function ResumeApp({
           </TooltipTrigger>
           <TooltipContent
             side="bottom"
-            className="px-2 py-1 bg-gray-800 text-white text-xs rounded cursor-pointer"
+            className="px-2 py-1 text-white text-xs rounded cursor-pointer"
           >
             Zoom Out
           </TooltipContent>
@@ -77,7 +77,7 @@ export default function ResumeApp({
           </TooltipTrigger>
           <TooltipContent
             side="bottom"
-            className="px-2 py-1 bg-gray-800 text-white text-xs rounded cursor-pointer"
+            className="px-2 py-1 text-white text-xs rounded cursor-pointer"
           >
             Reset Zoom
           </TooltipContent>
@@ -97,7 +97,7 @@ export default function ResumeApp({
           </TooltipTrigger>
           <TooltipContent
             side="bottom"
-            className="px-2 py-1 bg-gray-800 text-white text-xs rounded cursor-pointer"
+            className="px-2 py-1 text-white text-xs rounded cursor-pointer"
           >
             Zoom In
           </TooltipContent>
@@ -121,7 +121,7 @@ export default function ResumeApp({
           </TooltipTrigger>
           <TooltipContent
             side="bottom"
-            className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+            className="px-2 py-1 text-white text-xs rounded"
           >
             View PDF in New Tab
           </TooltipContent>
@@ -152,7 +152,7 @@ export default function ResumeApp({
           </TooltipTrigger>
           <TooltipContent
             side="bottom"
-            className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+            className="px-2 py-1 text-white text-xs rounded"
           >
             Download PDF
           </TooltipContent>

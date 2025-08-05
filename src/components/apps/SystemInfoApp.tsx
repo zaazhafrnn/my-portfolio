@@ -1,12 +1,11 @@
 "use client";
-
-import { useMemo } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useMemo } from "react";
 
 export default function SystemInfoApp() {
   const version = useMemo(() => {
@@ -32,7 +31,7 @@ export default function SystemInfoApp() {
   }, []);
 
   return (
-    <div className="bg-white w-full h-full flex flex-col">
+    <div className="bg-neutral-50 w-full h-full flex flex-col">
       <div className="grid grid-cols-3 p-12">
         <div className="flex items-center justify-center">
           <div className="aspect-square w-full max-w-xs rounded-full flex items-center justify-center  overflow-hidden border-6 border-gray-400">
@@ -61,7 +60,7 @@ export default function SystemInfoApp() {
                   </TooltipTrigger>
                   <TooltipContent
                     side="bottom"
-                    className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                    className="px-2 py-1 text-white text-xs rounded"
                   >
                     day. old.
                   </TooltipContent>
@@ -79,13 +78,16 @@ export default function SystemInfoApp() {
                 </TooltipTrigger>
                 <TooltipContent
                   side="right"
-                  className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                  className="px-2 py-1 text-white text-xs rounded"
                 >
                   MAMAA MAU INII! 🥺
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            <InfoRow label="Work Experience" value="10+ months – more or less" />
+            <InfoRow
+              label="Work Experience"
+              value="10+ months – more or less"
+            />
             <InfoRow
               label="Expertise"
               value="So Far Most Likely in Frontend Development"
@@ -142,7 +144,7 @@ export default function SystemInfoApp() {
                 </TooltipTrigger>
                 <TooltipContent
                   side="bottom"
-                  className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                  className="px-2 py-1 text-white text-xs rounded"
                 >
                   Open resume in new tab
                 </TooltipContent>
@@ -162,7 +164,7 @@ export default function SystemInfoApp() {
                 </TooltipTrigger>
                 <TooltipContent
                   side="bottom"
-                  className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                  className="px-2 py-1 text-white text-xs rounded"
                 >
                   View GitHub profile
                 </TooltipContent>

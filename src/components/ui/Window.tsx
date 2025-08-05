@@ -86,7 +86,7 @@ const Window: FC<WindowProps> = ({
                   </TooltipTrigger>
                   <TooltipContent
                     side="top"
-                    className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                    className="px-2 py-1 text-white text-xs rounded"
                   >
                     Close
                   </TooltipContent>
@@ -111,7 +111,7 @@ const Window: FC<WindowProps> = ({
                   </TooltipTrigger>
                   <TooltipContent
                     side="top"
-                    className="px-2 py-1 bg-gray-800 text-white text-xs rounded"
+                    className="px-2 py-1 text-white text-xs rounded"
                   >
                     Minimize
                   </TooltipContent>
