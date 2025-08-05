@@ -11,7 +11,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 
 export default function PhotosApp() {
-  const [rotation, setRotation] = useState(-22.5);
+  const [rotation, setRotation] = useState(-19.9);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentRotation, setCurrentRotation] = useState(0);
@@ -29,6 +29,7 @@ export default function PhotosApp() {
       { type: "image", src: "/photos/image-4.png" },
       { type: "video", src: "/photos/video-2.mp4" },
       { type: "image", src: "/photos/image-5.png" },
+      { type: "image", src: "/photos/image-7.jpg" },
       { type: "image", src: "/photos/image-6.png" },
     ],
     [],
