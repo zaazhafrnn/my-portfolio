@@ -235,7 +235,7 @@ export default function ResumeApp({
           </div>
         ) : (
           <div className="h-full overflow-auto">
-            <div className="w-max h-max p-8">
+            <div className="w-max h-max p-4">
               <div
                 style={{
                   transform: `scale(${zoom / 98})`,
@@ -261,10 +261,10 @@ export default function ResumeApp({
           <span>Page 1 of 1</span>
           <span>.pdf</span>
         </div>
-        <span>
+        {/*<span>
           💡 Pro tip: Drag the image wherever you need, or hit the eye icon to
           unleash full PDF experience!
-        </span>
+        </span>*/}
         <div className="flex items-center gap-4">
           <span>
             {lastModified

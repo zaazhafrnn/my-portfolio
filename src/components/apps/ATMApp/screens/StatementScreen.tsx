@@ -40,22 +40,19 @@ export default function StatementScreen({ onBack }: StatementScreenProps) {
     <div className="h-full bg-[#1a365d] text-white flex flex-col overflow-hidden">
       <div className="text-center py-3">
         <h2 className="text-lg font-bold mb-1">MINI STATEMENT</h2>
-        <div className="text-yellow-300 text-xs">Last 5 Transactions</div>
+        <div className="text-yellow-300 text-xs">Last 5 Transactions History</div>
       </div>
 
       <div className="flex-1 flex justify-between items-stretch">
-        {/* LEFT SIDE (empty for layout balance) */}
         <div className="flex flex-col justify-evenly text-left w-24" />
 
         <div className="flex-1 flex items-center justify-center px-6">
-          <div className="bg-white text-black p-4 rounded-lg w-full max-w-xs h-64 overflow-hidden text-xs">
+          <div className="bg-white text-black p-4 rounded-lg w-full max-w-xs h-full overflow-hidden text-xs">
             <div className="text-center mb-2">
-              <h3 className="text-xs font-bold">TRANSACTION HISTORY</h3>
-              <p className="text-xs">Account: **** **** **** 1234</p>
               <p className="text-xs">Date: {new Date().toLocaleDateString()}</p>
             </div>
 
-            <div className="space-y-1 h-36 overflow-hidden">
+            <div className="space-y-1 h-fit overflow-hidden">
               {transactions.map((tx, index) => (
                 <div
                   key={index}
@@ -90,7 +87,7 @@ export default function StatementScreen({ onBack }: StatementScreenProps) {
           </div>
         </div>
 
-        <div className="flex flex-col justify-end text-right mb-8">
+        <div className="flex flex-col justify-end text-right">
           <div className="flex items-center space-x-2 justify-end">
             <button
               onClick={onBack}

@@ -154,11 +154,11 @@ export default function PhotosApp() {
               >
                 {mediaItems.map((item, index) => {
                   const angle = (360 / mediaItems.length) * index;
-                  const translateZ = 125;
+                  const translateZ = 115;
                   return (
                     <div
                       key={index}
-                      className="absolute w-64 h-85 rounded-xl overflow-hidden"
+                      className="absolute w-48 h-64 rounded-xl overflow-hidden"
                       style={{
                         left: "50%",
                         top: "50%",

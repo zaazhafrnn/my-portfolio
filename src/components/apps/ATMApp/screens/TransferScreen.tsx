@@ -69,7 +69,6 @@ export default function TransferScreen({
 
   const clearInput = () => setInputValue("");
 
-  // --- Step: SUCCESS
   if (step === "success" && selectedAmount) {
     return (
       <div className="h-full bg-[#1a365d] text-white flex flex-col overflow-hidden">
@@ -93,7 +92,6 @@ export default function TransferScreen({
     );
   }
 
-  // --- Step: PIN ENTRY
   if (step === "pin" && selectedAmount) {
     return (
       <div className="mt-16">
@@ -106,7 +104,6 @@ export default function TransferScreen({
     );
   }
 
-  // --- Step: TRANSFER TYPE
   if (step === "type") {
     return (
       <div className="h-full bg-[#1a365d] text-white flex flex-col overflow-hidden">
@@ -171,34 +168,30 @@ export default function TransferScreen({
     );
   }
 
-  // --- Step: ACCOUNT / TOKEN INPUT
   if (step === "input") {
     const isTokenInput =
       selectedType === "ELECTRIC BILLS" || selectedType === "ASSURANCE";
     const maxLength = isTokenInput ? 8 : 6;
-
     return (
       <div className="h-full bg-[#1a365d] text-white flex flex-col overflow-hidden">
-        <div className="text-center py-3">
-          <h2 className="text-lg font-bold mb-1">
+        <div className="text-center py-2">
+          <h2 className="text-base font-bold mb-0.5">
             {isTokenInput ? "ENTER TOKEN" : "ACCOUNT NUMBER"}
           </h2>
           <div className="text-yellow-300 text-xs">For: {selectedType}</div>
         </div>
-
         <div className="flex-1 flex justify-center items-center flex-col px-4">
-          <div className="bg-gray-800 p-6 rounded-lg w-80">
-            <div className="text-center mb-4">
-              <div className="bg-gray-700 border border-green-500 text-center text-white px-4 py-3 rounded text-sm min-h-[3rem] flex items-center justify-center">
+          <div className="bg-gray-800 p-4 rounded-lg w-64">
+            <div className="text-center mb-3">
+              <div className="bg-gray-700 border border-green-500 text-center text-white px-3 py-2 rounded text-xs min-h-[2.5rem] flex items-center justify-center">
                 {inputValue ||
                   (isTokenInput ? "Enter Token" : "Enter Account Number")}
               </div>
-              <p className="text-xs text-gray-400 mt-1">
+              <p className="text-xs text-gray-400 mt-0.5">
                 {inputValue.length}/{maxLength} characters
               </p>
             </div>
-
-            <div className="grid grid-cols-3 gap-2 mb-4">
+            <div className="grid grid-cols-3 gap-1.5 mb-3">
               {[...Array(9)].map((_, i) => {
                 const digit = (i + 1).toString();
                 return (
@@ -206,7 +199,7 @@ export default function TransferScreen({
                     key={digit}
                     id={`input-digit-${digit}`}
                     onClick={() => handleNumberInput(digit)}
-                    className="bg-gray-600 hover:bg-gray-500 p-3 rounded font-bold text-lg transition-colors"
+                    className="bg-gray-600 hover:bg-gray-500 p-2 rounded font-bold text-base transition-colors"
                   >
                     {digit}
                   </button>
@@ -215,14 +208,14 @@ export default function TransferScreen({
               <button
                 id="input-clear"
                 onClick={clearInput}
-                className="bg-red-600 hover:bg-red-500 p-3 rounded font-bold text-sm transition-colors"
+                className="bg-red-600 hover:bg-red-500 p-2 rounded font-bold text-xs transition-colors"
               >
                 CLEAR
               </button>
               <button
                 id="input-digit-0"
                 onClick={() => handleNumberInput("0")}
-                className="bg-gray-600 hover:bg-gray-500 p-3 rounded font-bold text-lg transition-colors"
+                className="bg-gray-600 hover:bg-gray-500 p-2 rounded font-bold text-base transition-colors"
               >
                 0
               </button>
@@ -230,22 +223,20 @@ export default function TransferScreen({
                 id="input-confirm"
                 onClick={handleConfirmInput}
                 disabled={!inputValue.trim()}
-                className="bg-green-600 hover:bg-green-700 p-3 rounded font-bold text-sm transition-colors disabled:opacity-50"
+                className="bg-green-600 hover:bg-green-700 p-2 rounded font-bold text-xs transition-colors disabled:opacity-50"
               >
                 ENTER
               </button>
             </div>
           </div>
         </div>
-
-        <div className="text-center py-2 text-xs text-gray-400">
+        <div className="text-center py-1.5 text-xs text-gray-400">
           Use keypad to input and confirm
         </div>
       </div>
     );
   }
 
-  // --- Step: SELECT AMOUNT
   return (
     <div className="h-full bg-[#1a365d] text-white flex flex-col overflow-hidden">
       <div className="text-center py-3">

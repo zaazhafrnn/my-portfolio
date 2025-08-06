@@ -51,7 +51,7 @@ export const WelcomeText = () => {
       ref={containerRef}
       className="select-none font-sans variable-text relative w-full flex flex-col items-center justify-center"
     >
-      <div className="absolute -top-22">
+      <div className="absolute bottom-26 translate-x-3/18">
         <svg viewBox="0 0 300 100" className="w-[280px] h-[100px]">
           <path id="curve" d="M 10 90 Q 150 70 290 90" fill="transparent" />
           <text fontSize="24">

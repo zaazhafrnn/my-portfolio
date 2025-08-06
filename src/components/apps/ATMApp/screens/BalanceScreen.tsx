@@ -46,7 +46,7 @@ export default function BalanceScreen({ onBack }: BalanceScreenProps) {
           </div>
         </div>
 
-        <div className="flex flex-col justify-end text-right mb-8">
+        <div className="flex flex-col justify-end text-right">
           <div className="flex items-center space-x-2 justify-end">
             <button
               onClick={onBack}
