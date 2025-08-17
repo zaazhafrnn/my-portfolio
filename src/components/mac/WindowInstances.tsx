@@ -60,6 +60,7 @@ export default function WindowInstances({
                 customToolbarRight={windowToolbarContent[win.id]?.right}
                 width={WINDOW_SIZES[win.appId]?.width}
                 height={WINDOW_SIZES[win.appId]?.height}
+                hideToolbar={win.appId === "mBankingProject"}
               >
                 <Suspense
                   fallback={
@@ -112,7 +113,10 @@ export default function WindowInstances({
                   <ContextMenuItem asChild>
                     <span
                       onClick={() =>
-                        window.open("https://github.com/zaazhafrnn/ATM-System", "_blank")
+                        window.open(
+                          "https://github.com/zaazhafrnn/ATM-System",
+                          "_blank",
+                        )
                       }
                     >
                       View in GitHub

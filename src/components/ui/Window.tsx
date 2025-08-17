@@ -24,6 +24,7 @@ interface WindowProps {
   showDefaultButtons?: boolean;
   width?: number;
   height?: number;
+  hideToolbar?: boolean;
 }
 
 const DEFAULT_WIDTH = 600;
@@ -44,6 +45,7 @@ const Window: FC<WindowProps> = ({
   showDefaultButtons = true,
   width,
   height,
+  hideToolbar = false,
 }) => {
   const w = width ?? DEFAULT_WIDTH;
   const h = height ?? DEFAULT_HEIGHT;
@@ -60,82 +62,95 @@ const Window: FC<WindowProps> = ({
       }}
       onClick={() => onBringToFront(id)}
     >
-      <div
-        className="h-8 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-3 cursor-grabbing"
-        onMouseDown={(e) => onMouseDown(e, id)}
-      >
-        <div className="flex items-center gap-2">
-          {showDefaultButtons && (
-            <div className="flex gap-1">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onClose(id);
-                      }}
-                      className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center group cursor-pointer"
+      {!hideToolbar && (
+        <div
+          className="h-8 bg-gray-100 border-b border-gray-200 flex items-center justify-between px-3 cursor-grabbing"
+          onMouseDown={(e) => onMouseDown(e, id)}
+        >
+          <div className="flex items-center gap-2">
+            {showDefaultButtons && (
+              <div className="flex gap-1">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onClose(id);
+                        }}
+                        className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center group cursor-pointer"
+                      >
+                        <X
+                          className="text-red-900 opacity-0 group-hover:opacity-100 transition-opacity"
+                          size={8}
+                          strokeWidth={4}
+                        />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      className="px-2 py-1 text-white text-xs rounded"
                     >
-                      <X
-                        className="text-red-900 opacity-0 group-hover:opacity-100 transition-opacity"
-                        size={8}
-                        strokeWidth={4}
-                      />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="top"
-                    className="px-2 py-1 text-white text-xs rounded"
-                  >
-                    Close
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onMinimize(id);
-                      }}
-                      className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors flex items-center justify-center group cursor-pointer"
+                      Close
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onMinimize(id);
+                        }}
+                        className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors flex items-center justify-center group cursor-pointer"
+                      >
+                        <Minus
+                          className="text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity"
+                          size={8}
+                          strokeWidth={4}
+                        />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent
+                      side="top"
+                      className="px-2 py-1 text-white text-xs rounded"
                     >
-                      <Minus
-                        className="text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity"
-                        size={8}
-                        strokeWidth={4}
-                      />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent
-                    side="top"
-                    className="px-2 py-1 text-white text-xs rounded"
-                  >
-                    Minimize
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-              <button className="w-3 h-3 bg-gray-300 rounded-full" />
-            </div>
-          )}
+                      Minimize
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <button className="w-3 h-3 bg-gray-300 rounded-full" />
+              </div>
+            )}
 
-          {customToolbarLeft && (
-            <div className="flex items-center gap-1 ml-2">
-              {customToolbarLeft}
-            </div>
-          )}
+            {customToolbarLeft && (
+              <div className="flex items-center gap-1 ml-2">
+                {customToolbarLeft}
+              </div>
+            )}
+          </div>
+
+          <span className="text-sm font-medium text-gray-700 absolute left-1/2 transform -translate-x-1/2 pointer-events-none">
+            {title}
+          </span>
+
+          <div className="flex items-center gap-1">{customToolbarRight}</div>
         </div>
+      )}
 
-        <span className="text-sm font-medium text-gray-700 absolute left-1/2 transform -translate-x-1/2 pointer-events-none">
-          {title}
-        </span>
+      {hideToolbar && (
+        <div
+          className="absolute top-0 left-0 right-0 h-6 cursor-grab active:cursor-grabbing"
+          onMouseDown={(e) => onMouseDown(e, id)}
+        />
+      )}
 
-        <div className="flex items-center gap-1">{customToolbarRight}</div>
+      <div
+        className={`${hideToolbar ? "h-full" : "h-[calc(100%-2rem)]"} overflow-auto`}
+      >
+        {children}
       </div>
-
-      <div className="h-[calc(100%-2rem)] overflow-auto">{children}</div>
     </div>
   );
 };
