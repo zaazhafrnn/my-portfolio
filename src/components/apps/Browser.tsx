@@ -1,10 +1,10 @@
-import { Safari } from "../ui/safari";
+import { Safari } from "@/components/ui/safari";
 
 const Browser = () => (
   <div className="relative">
     {" "}
     <Safari
-      url="shadcn.io"
+      url="github.com/zaazhafrnn/M-Banking-Website"
       className="size-full"
     />{" "}
   </div>

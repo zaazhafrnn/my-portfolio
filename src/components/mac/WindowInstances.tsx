@@ -60,7 +60,9 @@ export default function WindowInstances({
                 customToolbarRight={windowToolbarContent[win.id]?.right}
                 width={WINDOW_SIZES[win.appId]?.width}
                 height={WINDOW_SIZES[win.appId]?.height}
-                hideToolbar={win.appId === "mBankingProject"}
+                toolbarVariant={
+                  win.appId === "mBankingProject" ? "transparent" : "default"
+                }
               >
                 <Suspense
                   fallback={
