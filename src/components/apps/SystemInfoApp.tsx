@@ -32,9 +32,9 @@ export default function SystemInfoApp() {
 
   return (
     <div className="bg-neutral-50 w-full h-full flex flex-col">
-      <div className="grid grid-cols-3 p-12">
+      <div className="grid grid-cols-3 p-8">
         <div className="flex items-center justify-center">
-          <div className="aspect-square w-full max-w-xs rounded-full flex items-center justify-center  overflow-hidden border-6 border-gray-400">
+          <div className="aspect-square w-full max-w-[180px] rounded-full flex items-center justify-center overflow-hidden border-4 border-gray-400">
             <video
               src={"/photos/video-3.mp4"}
               className="w-full h-full scale-120 right-0 object-cover rounded-full"
@@ -46,12 +46,12 @@ export default function SystemInfoApp() {
           </div>
         </div>
 
-        <div className="col-span-2 space-y-4 pl-14">
+        <div className="col-span-2 space-y-3 pl-8">
           <div>
-            <h1 className="text-4xl font-medium text-gray-900">
+            <h1 className="text-2xl font-medium text-gray-900">
               Achmad Zhafran Alysyam
             </h1>
-            <p className="text-sm">
+            <p className="text-xs">
               Version{" "}
               <TooltipProvider>
                 <Tooltip>
@@ -70,7 +70,7 @@ export default function SystemInfoApp() {
             </p>
           </div>
 
-          <div className="space-y-1 text-sm">
+          <div className="space-y-0.5 text-xs">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -97,7 +97,7 @@ export default function SystemInfoApp() {
               value="Politeknik Perkapalan Negeri Surabaya"
             />
             <InfoRow label="Major" value="Automation Engineering" />
-            <InfoRow label="Cohort" value="2025" />
+            <InfoRow label="Cohort" value="2025 (1st Year)" />
             <InfoRow label="Location" value="Surabaya, Indonesia" />
             <InfoRow
               label="Contact"
@@ -131,12 +131,12 @@ export default function SystemInfoApp() {
             />
           </div>
 
-          <div className="space-x-4 pt-0">
+          <div className="space-x-3 pt-1">
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    className="px-2 h-6 bg-neutral-50 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors border border-gray-300 cursor-pointer"
+                    className="px-2 h-5 bg-neutral-50 text-gray-700 text-xs font-medium rounded-md hover:bg-gray-200 transition-colors border border-gray-300 cursor-pointer"
                     onClick={() => window.open("/folder/Resume.pdf", "_blank")}
                   >
                     View Resume...
@@ -154,7 +154,7 @@ export default function SystemInfoApp() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    className="px-2 h-6 bg-neutral-50 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-200 transition-colors border border-gray-300 cursor-pointer"
+                    className="px-2 h-5 bg-neutral-50 text-gray-700 text-xs font-medium rounded-md hover:bg-gray-200 transition-colors border border-gray-300 cursor-pointer"
                     onClick={() =>
                       window.open("https://github.com/zaazhafrnn", "_blank")
                     }
@@ -184,7 +184,7 @@ export default function SystemInfoApp() {
 function InfoRow({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <span className="text-gray-900 font-medium w-36">{label}</span>
+      <span className="text-gray-900 font-medium w-28">{label}</span>
       <span className="pl-2 text-gray-600">{value}</span>
     </div>
   );

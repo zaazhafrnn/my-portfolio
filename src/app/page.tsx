@@ -39,7 +39,7 @@ const apps = [
 const WINDOW_SIZES: Record<string, { width: number; height: number }> = {
   // default = { width: 600, height: 400 };
   resume: { width: 660, height: 530 },
-  systemInfo: { width: 800, height: 455 },
+  systemInfo: { width: 660, height: 368 },
   atmProject: { width: 600, height: 500 },
   mBankingProject: { width: 750, height: 470 },
 };
