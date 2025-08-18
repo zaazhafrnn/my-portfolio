@@ -4,7 +4,7 @@ interface ATMButtonPanelProps {
   side: "left" | "right";
   screen: ScreenType;
   onNavigate: (screen: ScreenType) => void;
-  transferStep?: string | null; // NEW
+  transferStep?: string | null;
 }
 
 type ButtonConfig = {
@@ -74,7 +74,7 @@ const buttonMap: Record<
   transfer: { left: [], right: [] }, // handled dynamically
 };
 
-// NEW – dynamic buttons based on transfer step
+// dynamic buttons based on transfer step
 const getTransferButtonMap = (
   side: "left" | "right",
   step: string | null,

@@ -55,7 +55,7 @@ export default function DepositScreen({ onBack }: DepositScreenProps) {
           <div className="text-yellow-300 text-xs">Insert Cash</div>
         </div>
 
-        <div className="flex-1 flex flex-col justify-between items-stretch">
+        <div className="flex-1 flex flex-col justify-between items-stretch mb-6">
           <div className="flex flex-col justify-evenly text-left" />
 
           <div className="flex-1 flex flex-col items-center justify-center px-6">
@@ -64,9 +64,9 @@ export default function DepositScreen({ onBack }: DepositScreenProps) {
               <p className="text-xs text-gray-300 mb-2">
                 Insert the amount: Rp {selectedAmount.toLocaleString()}
               </p>
-              <div className="mt-2 p-3 bg-gray-800 border border-yellow-500 rounded mb-4">
+              {/*<div className="mt-2 p-3 bg-gray-800 border border-yellow-500 rounded mb-4">
                 <p className="text-xs text-yellow-300">Insert Cash</p>
-              </div>
+              </div>*/}
               <div className="bg-gray-800 p-4 rounded-lg mb-4 w-64 h-16 flex items-center justify-center">
                 <div className="animate-pulse text-center">
                   <div className="w-48 h-10 bg-gray-600 rounded" />
@@ -78,12 +78,12 @@ export default function DepositScreen({ onBack }: DepositScreenProps) {
               onClick={handleInsertDone}
               className="bg-green-600 hover:bg-green-700 px-3 py-2 rounded font-bold text-xs transition-colors"
             >
-              CASH INSERTED — CONFIRM
+              INSERT CASH — CONFIRM
             </button>
           </div>
 
           <div className="flex flex-col justify-evenly text-right">
-            <div className="flex items-center pb-16 justify-end">
+            <div className="flex items-center justify-end">
               <button
                 onClick={onBack}
                 className="flex p-2 rounded-md border border-red-400"

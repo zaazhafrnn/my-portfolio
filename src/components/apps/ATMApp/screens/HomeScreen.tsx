@@ -53,7 +53,7 @@ export default function HomeScreen({ onNavigate }: HomeScreenProps) {
             <div className="text-4xl mb-2">🏦</div>
             <p className="text-sm text-gray-300 mb-2">Choose a service</p>
             <div className="text-xs text-gray-400 mb-2">
-              <p>Account: **** **** **** 1234</p>
+              <p>Account: **** 1234</p>
             </div>
             <div className="mt-3 text-xs text-yellow-300">
               Touch screen OR use physical buttons

@@ -104,7 +104,7 @@ export default function ATMApp() {
             View GitHub ↗
           </span>
         </span>
-        <p className="italic">*Static preview of the project</p>
+        <p className="italic">*Static preview prototype</p>
       </div>
     </div>
   );
