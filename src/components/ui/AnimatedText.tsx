@@ -49,7 +49,7 @@ export const WelcomeText = () => {
   return (
     <div
       ref={containerRef}
-      className="select-none font-sans variable-text relative w-full flex flex-col items-center justify-center"
+      className="select-none font-sans variable-text relative w-full flex flex-col items-center justify-center -translate-x-6.5"
     >
       <div className="absolute bottom-26 translate-x-3/18">
         <svg viewBox="0 0 300 100" className="w-[280px] h-[100px]">
