@@ -21,7 +21,7 @@ const MacOSDock = dynamic(
 const apps = [
   { id: "finder", name: "Finder", icon: "/icons/finder.png" },
   { id: "photos", name: "Photo Dumps", icon: "/icons/photos.png" },
-  { id: "resume", name: "Resume.pdf", icon: "/icons/file.png" },
+  { id: "resume", name: "Resume.pdf", icon: "/icons/docs.png" },
   { id: "systemInfo", name: "System Information", icon: "/icons/settings.png" },
   {
     id: "mBankingProject",
