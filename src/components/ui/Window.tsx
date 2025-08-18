@@ -35,7 +35,7 @@ const TrafficLights: FC<{
   onClose: (id: number) => void;
   onMinimize: (id: number) => void;
 }> = ({ id, onClose, onMinimize }) => (
-  <div className="flex gap-1">
+  <div className="flex gap-1 group">
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
@@ -44,7 +44,7 @@ const TrafficLights: FC<{
               e.stopPropagation();
               onClose(id);
             }}
-            className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center group cursor-pointer"
+            className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 transition-colors flex items-center justify-center cursor-pointer"
           >
             <X
               className="text-red-900 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -70,7 +70,7 @@ const TrafficLights: FC<{
               e.stopPropagation();
               onMinimize(id);
             }}
-            className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors flex items-center justify-center group cursor-pointer"
+            className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 transition-colors flex items-center justify-center cursor-pointer"
           >
             <Minus
               className="text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity"
