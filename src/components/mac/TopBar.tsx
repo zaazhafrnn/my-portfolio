@@ -31,14 +31,15 @@ export default function TopBar() {
   return (
     <div className="absolute top-0 left-0 right-0 h-8.5 bg-black/2 backdrop-blur-sm border-b border-black/20">
       <div className="flex items-center justify-between h-full px-4 text-black text-base">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 translate-y-0.7">
           <Image
             src="/icons/apple-logo-black.svg"
+            className="mb-1"
             alt="My Icon"
             width={18}
             height={18}
           />
-          <span className="font-semibold">Portfolio</span>
+          <span className="font-semibold -ml-2">{`Achmad Zhafran's Portfolio`}</span>
           <span>File</span>
           <span>Edit</span>
           <span>View</span>
