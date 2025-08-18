@@ -1,9 +1,9 @@
 "use client";
 import {
   ATMApp,
-  Browser,
   PhotosApp,
   ResumeApp,
+  SafariLauncher,
   SystemInfoApp,
 } from "@/components/apps";
 import DesktopBackground from "@/components/mac/DesktopBackground";
@@ -102,7 +102,7 @@ export default function MacOSDesktop() {
       case "systemInfo":
         return <SystemInfoApp />;
       case "mBankingProject":
-        return <Browser />;
+        return <SafariLauncher />;
       case "atmProject":
         return <ATMApp />;
       default:
