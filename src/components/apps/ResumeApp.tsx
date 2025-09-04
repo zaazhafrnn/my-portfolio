@@ -1,4 +1,5 @@
 "use client";
+import { Spinner } from "@/components/ui/spinner";
 import {
   Tooltip,
   TooltipContent,
@@ -8,7 +9,6 @@ import {
 import { Download, Eye, ZoomIn, ZoomOut } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import { Spinner } from "@/components/ui/spinner";
 
 interface ResumeAppProps {
   className?: string;
@@ -28,6 +28,7 @@ export default function ResumeApp({
   const containerRef = useRef<HTMLDivElement>(null);
 
   const resumePath = "/folder/Resume.pdf";
+  const resumePhotoPath = "/folder/resume@3x.jpg";
   const disabled = !!error || isLoading;
 
   const handleZoomIn = () => {
@@ -137,7 +138,7 @@ export default function ResumeApp({
                   const url = URL.createObjectURL(await res.blob());
                   const a = document.createElement("a");
                   a.href = url;
-                  a.download = "Resume.pdf";
+                  a.download = "Achmad Zhafran's Resume.pdf";
                   a.click();
                   URL.revokeObjectURL(url);
                 } catch {
@@ -176,7 +177,7 @@ export default function ResumeApp({
   useEffect(() => {
     const checkPdfFile = async () => {
       try {
-        const response = await fetch(resumePath, { method: "HEAD" });
+        const response = await fetch(resumePhotoPath, { method: "HEAD" });
         if (response.ok) {
           const lastMod = response.headers.get("last-modified");
           if (lastMod) {
