@@ -25,6 +25,11 @@ export default function DesktopBackground({
   handleCloseAllWindows: () => void;
   minimizeAllWindows: () => void;
 }) {
+  const handleResetSplashScreen = () => {
+    sessionStorage.removeItem("hasSeenSplash");
+    window.location.reload();
+  };
+
   return (
     <ContextMenu>
       <ContextMenuTrigger>
@@ -48,7 +53,7 @@ export default function DesktopBackground({
           </div>
         </div>
       </ContextMenuTrigger>
-      <ContextMenuContent className="w-52">
+      <ContextMenuContent className="w-54">
         <ContextMenuItem
           inset
           onSelect={handleCloseAllWindows}
@@ -78,6 +83,10 @@ export default function DesktopBackground({
         <ContextMenuItem inset onSelect={() => window.location.reload()}>
           Reload Page
           <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem inset onSelect={handleResetSplashScreen}>
+          Show Splash Screen
+          <ContextMenuShortcut>⌘⇧R</ContextMenuShortcut>
         </ContextMenuItem>
         <ContextMenuSub>
           <ContextMenuSubTrigger inset>More Tools</ContextMenuSubTrigger>

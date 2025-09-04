@@ -10,7 +10,76 @@ export const WelcomeText = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const bigSpansRef = useRef<HTMLSpanElement[]>([]);
   const smallSpansRef = useRef<SVGTextPathElement[]>([]);
+  const shimmerIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const shimmerTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  useEffect(() => {
+    const intro = gsap.timeline();
+
+    if (bigSpansRef.current.length > 0) {
+      intro.fromTo(
+        bigSpansRef.current,
+        { y: -50, opacity: 0, scale: 0.8 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.8,
+          ease: "bounce.out",
+          stagger: 0.05,
+        },
+      );
+    }
+
+    if (smallSpansRef.current.length > 0) {
+      intro.fromTo(
+        smallSpansRef.current,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: 0.03,
+          delay: 0.2,
+        },
+        "<",
+      );
+    }
+
+    intro.call(() => {
+      const shimmerWave = () => {
+        gsap.fromTo(
+          bigSpansRef.current,
+          { opacity: 1 },
+          {
+            opacity: 0.4,
+            duration: 0.6,
+            ease: "sine.inOut",
+            stagger: {
+              each: 0.08,
+              yoyo: true,
+              repeat: 1,
+            },
+          },
+        );
+      };
+
+      shimmerIntervalRef.current = setInterval(shimmerWave, 11000);
+      shimmerTimeoutRef.current = setTimeout(shimmerWave, 11000); // first shimmer after intro
+    });
+
+    return () => {
+      if (shimmerIntervalRef.current) {
+        clearInterval(shimmerIntervalRef.current);
+      }
+      if (shimmerTimeoutRef.current) {
+        clearTimeout(shimmerTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Mouse move font-weight animation
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       const animate = (spans: (HTMLElement | SVGTextPathElement)[]) => {

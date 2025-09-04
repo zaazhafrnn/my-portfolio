@@ -9,9 +9,10 @@ import {
 import DesktopBackground from "@/components/mac/DesktopBackground";
 import TopBar from "@/components/mac/TopBar";
 import WindowInstances from "@/components/mac/WindowInstances";
+import SplashScreen from "@/components/ui/SplashScreen";
 import { useWindowManager } from "@/hooks/useWindowManager";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const MacOSDock = dynamic(
   () => import("@/components/ui/mac-os-dock").then((mod) => mod.MacOSDock),
@@ -44,7 +45,26 @@ const WINDOW_SIZES: Record<string, { width: number; height: number }> = {
   mBankingProject: { width: 750, height: 470 },
 };
 
-export default function MacOSDesktop() {
+export default function MacOSDesktopWrapper() {
+  const [showSplash, setShowSplash] = useState(false);
+
+  useEffect(() => {
+    const hasSeenSplash = sessionStorage.getItem("hasSeenSplash");
+
+    if (!hasSeenSplash) {
+      setShowSplash(true);
+      sessionStorage.setItem("hasSeenSplash", "true");
+    }
+  }, []);
+
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
+
+  return <MacOSDesktop />;
+}
+
+function MacOSDesktop() {
   const {
     windows,
     openWindow,
