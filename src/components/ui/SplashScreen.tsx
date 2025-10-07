@@ -96,7 +96,7 @@ export default function SplashScreen({
   }, [phase, exitDelay]);
 
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-100 z-[9999]">
+    <div className="fixed inset-0 flex flex-col select-none items-center justify-center bg-gray-100 z-[9999]">
       <div
         className={`transition-transform duration-700 ${
           phase !== "hello" ? "-translate-y-5" : "translate-y-10"
